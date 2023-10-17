@@ -1,6 +1,8 @@
 import cv2 as cv
+import detector
+import config
 
-capture = cv.VideoCapture(0)
+capture = cv.VideoCapture(config.camera_index)
 
 if not capture.isOpened():
     print('Cannot open camera')
@@ -17,9 +19,9 @@ while True:
 
     # operations on the frame belong here
 
-    gray_img = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    img_with_contours = detector.detect_contours(frame)
 
-    cv.imshow('frame', gray_img)
+    cv.imshow('frame', img_with_contours)
 
     # press q to quit
     if cv.waitKey(1) == ord('q'):
