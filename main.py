@@ -8,6 +8,7 @@ if not capture.isOpened():
     print('Cannot open camera. Did you set the right camera index in config.py?')
     exit()
 
+# TODO: This could lead to performance issues, set a fps limit
 while True:
     # Capture frame-by-frame
     ret, frame = capture.read()
