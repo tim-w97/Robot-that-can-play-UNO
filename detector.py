@@ -12,20 +12,30 @@ ret, thresh = cv.threshold(
     type=cv.THRESH_BINARY
 )
 
-cv.imshow('thresh', thresh)
-cv.waitKey(0)
-
 contours, hierarchy = cv.findContours(
     image=thresh,
     mode=cv.RETR_TREE,
     method=cv.CHAIN_APPROX_NONE
 )
 
+def is_bigger_contour(contour):
+    area = cv.contourArea(contour)
+    return area > 50_000
+
+bigger_contours_iterator = filter(is_bigger_contour, contours)
+bigger_contours = list(bigger_contours_iterator)
+
+
+for contour in contours:
+    print(cv.contourArea(contour))
+
+
+
 img_with_contours = img.copy()
 
 cv.drawContours(
     image=img_with_contours,
-    contours=contours,
+    contours=bigger_contours,
     contourIdx=-1,
     color=(0,255,0),
     thickness=2
