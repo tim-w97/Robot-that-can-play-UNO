@@ -5,7 +5,7 @@ import config
 capture = cv.VideoCapture(config.camera_index)
 
 if not capture.isOpened():
-    print('Cannot open camera')
+    print('Cannot open camera. Did you set the right camera index in config.py?')
     exit()
 
 while True:

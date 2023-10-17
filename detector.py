@@ -6,7 +6,7 @@ import config
 # this is necessary because we only want the "big contours from the cards"
 def is_bigger_contour(contour_to_check):
     area = cv.contourArea(contour_to_check)
-    return area > config.area_filter_size
+    return area > config.contour_filter_size
 
 
 def detect_contours(img):
@@ -34,8 +34,8 @@ def detect_contours(img):
         image=img_with_contours,
         contours=bigger_contours,
         contourIdx=-1,
-        color=(0, 255, 0),
-        thickness=2
+        color=config.contour_color,
+        thickness=config.contour_thickness,
     )
 
     return img_with_contours
