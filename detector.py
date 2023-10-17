@@ -1,5 +1,4 @@
 import cv2 as cv
-
 import config
 
 img = cv.imread('webcam simulation.jpeg')
