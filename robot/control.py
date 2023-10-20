@@ -17,3 +17,5 @@ class RobotProxy:
     def move(self, point1:float, point2:float, point3:float, point4:float, point5:float, point6:float):
         self.robot.move_joints(point1, point2, point3, point4, point5, point6)
 
+
+# further logic can be placed in here
