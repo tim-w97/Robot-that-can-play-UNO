@@ -13,8 +13,8 @@ class UnoCard:
         self.number = number
         self.color = color
     
-    def getNumber(self)->int:
+    def get_number(self)->int:
         return self.number
     
-    def getColor(self)->Color:
+    def get_color(self)->Color:
         return self.color
