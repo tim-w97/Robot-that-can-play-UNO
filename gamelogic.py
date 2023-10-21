@@ -36,6 +36,16 @@ class Player:
                     self.cards.remove(i)
         self.card_amount = len(self.cards)
 
+class Game:
+    #if color or number equal...
+    #user input move finished...
+    #for testing console input/output...
+    #two card stacks one for drawing one for field...
+    #state...
+    pass
+
+class GameTest:
+    pass
 
 def test_func():
     cards = [UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)]
