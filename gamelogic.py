@@ -38,7 +38,7 @@ class CardStack:
 class Player:
 
     def __init__(self,name,cardstack):
-        self.player = name
+        self.name = name
         self.cardstack = cardstack
 
     def add_card(self,card):
@@ -49,27 +49,28 @@ class Player:
     
     def get_card_count(self) -> int:
         return self.cardstack.card_amount
-#maybe add a Cardstack class
 
-#if color or number equal...
+class Game:
+    #if color or number equal...
     #user input move finished...
     #for testing console input/output...
     #two card stacks one for drawing one for field...
     #state...
-
-class Game:
-    
-    pass
+    #keep track which players turn it is
+    #check who is winning
+    def __init__(self,player_one,player_two):
+        self.player_one = player_one
+        self.player_two = player_two
 
 class GameTest:
     pass
 
 def test_func():
     card_stack_p1 = CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)])
-    p1 = Player("John doe",card_stack_p1)
+    p1 = Player("John Doe",card_stack_p1)
     p1.add_card(UnoCard(2,Color.YELLOW))
     p1.remove_card(UnoCard(2,Color.YELLOW))
-    print(p1.get_card_count())
+    print(f'Card count of player {p1.name} = {p1.get_card_count()}.')
 
 test_func()
 
