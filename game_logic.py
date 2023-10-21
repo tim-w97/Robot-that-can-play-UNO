@@ -23,7 +23,7 @@ class CardStack:
 
     def __init__(self,cards):
         self.cards = cards
-        self.card_amount = len(cards)
+        self.card_amount = len(self.cards)
 
     def add_card(self,card):
         self.cards.append(card)
@@ -34,6 +34,14 @@ class CardStack:
                 if i.number == card.number and i.color == card.color:
                     self.cards.remove(i)
         self.card_amount = len(self.cards)
+    
+    def pop_card(self,card) -> UnoCard:
+        for i in range(len(self.cards)):
+                if self.cards[i].number == card.number and self.cards[i].color == card.color:
+                    tmp = self.cards.pop(i)
+                    self.card_amount = len(self.cards)
+                    return tmp
+        return None
 
 class Player:
 
@@ -49,6 +57,9 @@ class Player:
     
     def get_card_count(self) -> int:
         return self.cardstack.card_amount
+    
+    def play_card(self,unocard) -> UnoCard:
+        return self.cardstack.pop_card(unocard)
 
 class Game:
     #if color or number equal...
