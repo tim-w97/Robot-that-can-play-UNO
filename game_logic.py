@@ -61,16 +61,3 @@ class Game:
     def __init__(self,player_one,player_two):
         self.player_one = player_one
         self.player_two = player_two
-
-class GameTest:
-    pass
-
-def test_func():
-    card_stack_p1 = CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)])
-    p1 = Player("John Doe",card_stack_p1)
-    p1.add_card(UnoCard(2,Color.YELLOW))
-    p1.remove_card(UnoCard(2,Color.YELLOW))
-    print(f'Card count of player {p1.name} = {p1.get_card_count()}.')
-
-test_func()
-
