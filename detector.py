@@ -9,7 +9,7 @@ def is_bigger_contour(contour_to_check):
     return area > config.contour_filter_size
 
 
-def detect_contours(img):
+def get_contours(img):
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     ret, thresh = cv.threshold(
@@ -28,14 +28,4 @@ def detect_contours(img):
     bigger_contours_iterator = filter(is_bigger_contour, contours)
     bigger_contours = list(bigger_contours_iterator)
 
-    img_with_contours = img.copy()
-
-    cv.drawContours(
-        image=img_with_contours,
-        contours=bigger_contours,
-        contourIdx=-1,
-        color=config.contour_color,
-        thickness=config.contour_thickness,
-    )
-
-    return img_with_contours
+    return bigger_contours
