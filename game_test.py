@@ -9,13 +9,6 @@ class GameTest:
         self.player_two = player_two
         self.main_stack = main_stack
         self.game_is_over = False
-    
-    def test_func_remove_add(self):
-        card_stack_p1 = CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)])
-        p1 = Player("John Doe",card_stack_p1)
-        p1.add_card(UnoCard(2,Color.YELLOW))
-        p1.remove_card(UnoCard(2,Color.YELLOW))
-        print(f'Card count of player {p1.name} = {p1.get_card_count()}.')
 
     def set_winner(self,player):
         if player.get_card_count() == 0:
@@ -23,6 +16,13 @@ class GameTest:
             self.game_is_over = True
         else:
             self.game_is_over = False
+    
+    def test_func_remove_add(self):
+        card_stack_p1 = CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)])
+        p1 = Player("John Doe",card_stack_p1)
+        p1.add_card(UnoCard(2,Color.YELLOW))
+        p1.remove_card(UnoCard(2,Color.YELLOW))
+        print(f'Card count of player {p1.name} = {p1.get_card_count()}.')
 
     def run_game(self):
         while True:
