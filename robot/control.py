@@ -1,5 +1,7 @@
 from pyniryo import *
 
+cardPose = [0.2, -0.2, 0.2, 0.003, 0.994, .0]
+
 class RobotProxy:
     def __init__(self):
         pass
@@ -9,13 +11,19 @@ class RobotProxy:
         self.robot.calibrate_auto()
         self.robot.update_tool()
 
-        self.joints = robot.get_joints()
+        self.robot.move_to_home_pose()
 
     def disconnect(self):
         self.robot.close_connection()
 
-    def move(self, point1:float, point2:float, point3:float, point4:float, point5:float, point6:float):
-        self.robot.move_joints(point1, point2, point3, point4, point5, point6)
+    def moveJoints(self, j0, j1, j2, j3, j4, j5):
+        self.robot.move_joints(j0, j1, j2, j3, j4, j5)
+
+    def move(self, x, y, z, roll, pitch, yaw):
+        self.robot.move_pose(x, y, z, roll, pitch, yaw)
+
+    def moveToHomePose(self):
+        self.robot.move_to_home_pose()
 
 
 # further logic can be placed in here
