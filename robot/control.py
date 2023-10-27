@@ -1,29 +1,82 @@
 from pyniryo import *
 
-cardPose = [0.2, -0.2, 0.2, 0.003, 0.994, .0]
+cardPose = PoseObject(
+    x=0.2, y=-0.2, z=0.2,
+    roll=0.003, pitch=0.994, yaw=0.0
+)
 
 class RobotProxy:
     def __init__(self):
-        pass
+        self.connected = False
 
     def connect(self):
-        self.robot = NiryoRobot("10.10.10.10")
-        self.robot.calibrate_auto()
-        self.robot.update_tool()
+        try:
+            self.robot = NiryoRobot("10.10.10.10")
+            self.robot.calibrate_auto()
+            self.robot.update_tool()
 
-        self.robot.move_to_home_pose()
+            self.robot.move_to_home_pose()
+            self.pose = self.robot.get_pose()
+
+            self.connected = True
+        except:
+            self.robot = None
+            print("There is an error with the connection")
+
+    def checkConnection(self):
+        if not self.connected: raise Exception("There is no robot connected")
 
     def disconnect(self):
+        self.checkConnection()
         self.robot.close_connection()
-
+        
+    # simple movement
+    '''
+    Only use the moveJoints to turn the cards. For any other purposes use move
+    '''
     def moveJoints(self, j0, j1, j2, j3, j4, j5):
+        self.checkConnection()
         self.robot.move_joints(j0, j1, j2, j3, j4, j5)
+        self.pose = self.robot.get_pose()
 
-    def move(self, x, y, z, roll, pitch, yaw):
-        self.robot.move_pose(x, y, z, roll, pitch, yaw)
+    def updatePose(self, x, y, z, roll, pitch, yaw):
+        if not x: x = self.pose.x
+        if not y: y = self.pose.y
+        if not z: z = self.pose.z
+        if not roll: roll = self.pose.roll
+        if not pitch: pitch = self.pose.pitch
+        if not yaw: yaw = self.pose.yaw
+        return PoseObject(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
+
+    '''
+    This is the convenient method to control the robot.
+    move(self, x=self.pose.x) is not working. If you find a similiar version to get a default value from the self-pose, let me know.
+    '''
+    def move(self, x=False, y=False, z=False, roll=False, pitch=False, yaw=False):
+        self.checkConnection()
+
+        new_pose = self.updatePose(x, y, z, roll, pitch, yaw)
+        self.robot.move_pose(new_pose)
+        self.pose = new_pose
+
+    # def move(self, x, y, z):
+    #     self.checkConnection()
+    #     pose = self.robot.get_pose()
+    #     pose.x = x
+    #     pose.y = y
+    #     pose.z = z
+    #     self.robot.move_pose(pose)
 
     def moveToHomePose(self):
+        self.checkConnection()
         self.robot.move_to_home_pose()
+        self.pose = self.robot.get_pose()
 
+    # Grabber
+    def grab(self):
+        self.checkConnection()
+        self.robot.close_gripper()
 
-# further logic can be placed in here
+    def release(self):
+        self.checkConnection()
+        self.robot.open_gripper()
