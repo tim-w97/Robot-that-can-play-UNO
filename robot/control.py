@@ -5,6 +5,13 @@ cardPose = PoseObject(
     roll=0.003, pitch=0.994, yaw=0.0
 )
 
+'''
+How to use the Proxy:
+1. create instance
+2. connect()
+3. use move() to control the movement
+4. disconnect()
+'''
 class RobotProxy:
     def __init__(self):
         self.connected = False
@@ -19,26 +26,32 @@ class RobotProxy:
             self.pose = self.robot.get_pose()
 
             self.connected = True
+            print("The robot is ready to use.")
         except:
             self.robot = None
-            print("There is an error with the connection")
+            print("There is an error with the connection. Make sure to be connected to the Niryo Wifi.")
 
     def checkConnection(self):
         if not self.connected: raise Exception("There is no robot connected")
 
     def disconnect(self):
         self.checkConnection()
+
+        self.robot.move_to_home_pose()
         self.robot.close_connection()
         
     # simple movement
     '''
-    Only use the moveJoints to turn the cards. For any other purposes use move
+    Do not use this function for simple movement. Instead use move. This function only exists for turning cards.
     '''
     def moveJoints(self, j0, j1, j2, j3, j4, j5):
         self.checkConnection()
         self.robot.move_joints(j0, j1, j2, j3, j4, j5)
         self.pose = self.robot.get_pose()
 
+    '''
+    This method calculates
+    '''
     def updatePose(self, x, y, z, roll, pitch, yaw):
         if not x: x = self.pose.x
         if not y: y = self.pose.y
@@ -59,14 +72,6 @@ class RobotProxy:
         self.robot.move_pose(new_pose)
         self.pose = new_pose
 
-    # def move(self, x, y, z):
-    #     self.checkConnection()
-    #     pose = self.robot.get_pose()
-    #     pose.x = x
-    #     pose.y = y
-    #     pose.z = z
-    #     self.robot.move_pose(pose)
-
     def moveToHomePose(self):
         self.checkConnection()
         self.robot.move_to_home_pose()
@@ -80,3 +85,13 @@ class RobotProxy:
     def release(self):
         self.checkConnection()
         self.robot.open_gripper()
+
+    # functions for fun
+    def killAllHuman(self):
+        for i in range(10):
+            self.moveJoints(2.99, .0, .0, .0, .0, .0)
+            self.grab()
+            self.moveJoints(-2.99, .0, .0, .0, .0, .0)
+            self.release()
+
+            
