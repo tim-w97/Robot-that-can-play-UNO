@@ -1,5 +1,4 @@
 from game_classes import *
-import keyboard
 
 #This class is just for testing the game logic itself and the classes and methodes inside game_logic.py#
 
@@ -26,11 +25,14 @@ class GameTest:
             self.game_is_over = False
 
     def run_game(self):
-        while(not keyboard.is_pressed('q') and not self.game_is_over):
-            self.player_one.play_card(UnoCard(1,Color.RED))
-            print(self.player_one.get_card_count())
-            print(f'gamestate:{self.game_is_over}')
-            self.set_winner(self.player_one)
+        while True:
+            while(not self.game_is_over):
+                self.player_one.play_card(UnoCard(1,Color.RED))
+                print(self.player_one.get_card_count())
+                print(f'gamestate:{self.game_is_over}')
+                self.set_winner(self.player_one)
+            if input()=='q':
+                break
 
 
 
