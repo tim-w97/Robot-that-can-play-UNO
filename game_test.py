@@ -1,4 +1,4 @@
-from game_logic import *
+from game_classes import *
 import keyboard
 
 #This class is just for testing the game logic itself and the classes and methodes inside game_logic.py#
