@@ -1,9 +1,11 @@
 import cv2 as cv
+import color_detection
 import detector
 import config
 
 capture = cv.VideoCapture(config.camera_index)
 
+print("color is: ", color_detection.color_detection("color_test_images/green.jpg"))
 if not capture.isOpened():
     print('Cannot open camera. Did you set the right camera index in config.py?')
     exit()

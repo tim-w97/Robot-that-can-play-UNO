@@ -1,5 +1,5 @@
 # general
-camera_index = 1
+camera_index = 0
 gray_image_thresh = 130
 
 # contours
