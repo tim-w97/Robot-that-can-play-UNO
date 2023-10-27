@@ -12,18 +12,27 @@ for c in contours:
     ROI = dummy_img[y:y+h, x:x+w]
     break
 
-rect = cv.minAreaRect(contours[1])
+rect = cv.minAreaRect(contours[0])
 
 box = cv.boxPoints(rect)
 box = np.intp(box)
 
-cv.drawContours(
-    dummy_img,
-    [box],
-    0,
-    (0, 0, 255),
-    2
-)
+width = int(rect[1][0])
+height = int(rect[1][1])
 
-cv.imshow('cropped card',dummy_img)
+src_pts = box.astype("float32")
+# coordinate of the points in box points after the rectangle has been
+# straightened
+dst_pts = np.array([[0, height-1],
+                    [0, 0],
+                    [width-1, 0],
+                    [width-1, height-1]], dtype="float32")
+
+# the perspective transformation matrix
+M = cv.getPerspectiveTransform(src_pts, dst_pts)
+
+# directly warp the rotated rectangle to get the straightened rectangle
+warped = cv.warpPerspective(dummy_img, M, (width, height))
+
+cv.imshow('warped card', warped)
 cv.waitKey()
