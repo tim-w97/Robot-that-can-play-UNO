@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Homebrew Python3" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (pythonProject1)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Homebrew Python3" project-jdk-type="Python SDK" />
 </project>

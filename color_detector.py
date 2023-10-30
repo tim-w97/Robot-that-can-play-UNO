@@ -3,15 +3,13 @@ import numpy as np
 from PIL import Image
 
 
-def color_detection(filename):
-    image = cv2.imread(filename)
-
+def detect_color(card_img):
     # Get the size (width and height) of the image
-    height, width, channels = image.shape
+    height, width, channels = card_img.shape
 
     # Crop the card region
     # You'll need to define the coordinates for cropping
-    card = image[0:height, 0:width]
+    card = card_img[0:height, 0:width]
 
     # Convert to HSV color space
     hsv = cv2.cvtColor(card, cv2.COLOR_BGR2HSV)
@@ -30,7 +28,6 @@ def color_detection(filename):
         upper = np.array(upper, dtype=np.uint8)
         mask = cv2.inRange(hsv, lower, upper)
         if mask.sum() > 10:  # You may need to adjust the threshold
-            print("Detected Uno card color:", color)
             return color
 
     return "not recognized"

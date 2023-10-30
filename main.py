@@ -1,5 +1,5 @@
 import cv2 as cv
-import color_detection
+import color_detector
 import card_cropper
 import detector
 import config
