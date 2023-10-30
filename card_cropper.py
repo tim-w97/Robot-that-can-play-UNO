@@ -40,6 +40,11 @@ def crop_cards_from_img(img):
         # directly warp the rotated rectangle to get the straightened rectangle
         warped_img = cv.warpPerspective(img, m, (width, height))
 
+        height, width, channels = warped_img.shape
+
+        if width > height:
+            warped_img = cv.rotate(warped_img, cv.ROTATE_90_CLOCKWISE)
+
         cropped_cards.append(warped_img)
 
     return cropped_cards
