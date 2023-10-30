@@ -1,5 +1,6 @@
 import cv2 as cv
 import color_detection
+import card_cropper
 import detector
 import config
 
@@ -22,9 +23,12 @@ while True:
 
     # operations on the frame belong here
 
-    img_with_contours = detector.detect_contours(frame)
+    cropped_cards = card_cropper.crop_cards_from_img(frame)
 
-    cv.imshow('frame', img_with_contours)
+    if cropped_cards is None:
+        continue
+
+    cv.imshow('frame', cropped_cards[0])
 
     # press q to quit
     if cv.waitKey(1) == ord('q'):
