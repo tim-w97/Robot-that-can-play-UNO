@@ -3,38 +3,43 @@ import detector
 import numpy as np
 
 
-def crop_card_from_img(img):
+def crop_cards_from_img(img):
     contours = detector.get_contours(img)
 
     if len(contours) == 0:
         return None
 
-    rect = cv.minAreaRect(contours[0])
+    cropped_cards = []
 
-    box = cv.boxPoints(rect)
-    box = np.intp(box)
+    for contour in contours:
+        rect = cv.minAreaRect(contour)
 
-    width = int(rect[1][0])
-    height = int(rect[1][1])
+        box = cv.boxPoints(rect)
+        box = np.intp(box)
 
-    src_pts = box.astype("float32")
+        width = int(rect[1][0])
+        height = int(rect[1][1])
 
-    # coordinate of the points in box points after the rectangle has been
-    # straightened
-    dst_pts = np.array(
-        object=[
-            [0, height-1],
-            [0, 0],
-            [width-1, 0],
-            [width-1, height-1]
-        ],
-        dtype="float32"
-    )
+        src_pts = box.astype("float32")
 
-    # the perspective transformation matrix
-    m = cv.getPerspectiveTransform(src_pts, dst_pts)
+        # coordinate of the points in box points after the rectangle has been
+        # straightened
+        dst_pts = np.array(
+            object=[
+                [0, height-1],
+                [0, 0],
+                [width-1, 0],
+                [width-1, height-1]
+            ],
+            dtype="float32"
+        )
 
-    # directly warp the rotated rectangle to get the straightened rectangle
-    warped_img = cv.warpPerspective(img, m, (width, height))
+        # the perspective transformation matrix
+        m = cv.getPerspectiveTransform(src_pts, dst_pts)
 
-    return warped_img
+        # directly warp the rotated rectangle to get the straightened rectangle
+        warped_img = cv.warpPerspective(img, m, (width, height))
+
+        cropped_cards.append(warped_img)
+
+    return cropped_cards

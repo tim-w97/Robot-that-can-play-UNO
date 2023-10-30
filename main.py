@@ -22,12 +22,12 @@ while True:
 
     # operations on the frame belong here
 
-    cropped_card = card_cropper.crop_card_from_img(frame)
+    cropped_cards = card_cropper.crop_cards_from_img(frame)
 
-    if cropped_card is None:
+    if cropped_cards is None:
         continue
 
-    cv.imshow('frame', cropped_card)
+    cv.imshow('frame', cropped_cards[0])
 
     # press q to quit
     if cv.waitKey(1) == ord('q'):
