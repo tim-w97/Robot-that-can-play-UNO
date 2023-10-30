@@ -1,9 +1,12 @@
 import cv2 as cv
+import color_detector
+import card_cropper
 import detector
 import config
 
 capture = cv.VideoCapture(config.camera_index)
 
+print("color is: ", color_detection.color_detection("color_test_images/green.jpg"))
 if not capture.isOpened():
     print('Cannot open camera. Did you set the right camera index in config.py?')
     exit()
@@ -20,9 +23,12 @@ while True:
 
     # operations on the frame belong here
 
-    img_with_contours = detector.detect_contours(frame)
+    cropped_cards = card_cropper.crop_cards_from_img(frame)
 
-    cv.imshow('frame', img_with_contours)
+    if cropped_cards is None:
+        continue
+
+    cv.imshow('frame', cropped_cards[0])
 
     # press q to quit
     if cv.waitKey(1) == ord('q'):
