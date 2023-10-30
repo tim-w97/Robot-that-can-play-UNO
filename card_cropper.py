@@ -3,10 +3,11 @@ import detector
 import numpy as np
 
 
-def crop_card_from_img():
-    dummy_img = cv.imread('dummy image.jpeg')
+def crop_card_from_img(img):
+    contours = detector.get_contours(img)
 
-    contours = detector.get_contours(dummy_img)
+    if len(contours) == 0:
+        return None
 
     rect = cv.minAreaRect(contours[0])
 
@@ -34,6 +35,6 @@ def crop_card_from_img():
     m = cv.getPerspectiveTransform(src_pts, dst_pts)
 
     # directly warp the rotated rectangle to get the straightened rectangle
-    warped_img = cv.warpPerspective(dummy_img, m, (width, height))
+    warped_img = cv.warpPerspective(img, m, (width, height))
 
     return warped_img
