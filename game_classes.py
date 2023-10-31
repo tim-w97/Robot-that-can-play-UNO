@@ -42,6 +42,7 @@ class CardStack:
                     self.card_amount = len(self.cards)
                     return tmp
         return None
+    
 
 class Player:
 
@@ -69,6 +70,10 @@ class Game:
     #state...
     #keep track which players turn it is
     #check who is winning
-    def __init__(self,player_one,player_two):
+    def __init__(self,player_one,player_two,main_stack):
         self.player_one = player_one
         self.player_two = player_two
+        self.main_stack = main_stack
+
+    def match_cards(self,card_1,card_2)->bool:
+        pass

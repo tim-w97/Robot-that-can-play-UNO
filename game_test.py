@@ -36,9 +36,9 @@ class GameTest:
 
 
 
-player_1 = Player("John Doe",CardStack([UnoCard(1,Color.RED)]))
+player_1 = Player("John Doe",CardStack([UnoCard(1,Color.RED),UnoCard(4,Color.GREEN)]))
 player_2 = Player("Jane Doe",CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)]))
-main_stack = CardStack([UnoCard(1,Color.RED)])
+main_stack = CardStack([UnoCard(1,Color.RED),UnoCard(4,Color.GREEN)])
 test_game = GameTest(player_1,player_2,main_stack)
 test_game.run_game()
 test_game.test_func_remove_add()
