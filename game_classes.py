@@ -19,6 +19,9 @@ class UnoCard:
     def get_color(self)->Color:
         return self.color
     
+    def to_string(self)->str:
+        return ''.join(f'{str(self.color)} {str(self.number)}')
+    
 class CardStack:
 
     def __init__(self,cards):
@@ -36,30 +39,24 @@ class CardStack:
         self.card_amount = len(self.cards)
     
     def pop_specific_card(self,card) -> UnoCard:
-        try:
-            for i in range(len(self.cards)):
-                    if self.cards[i].number == card.number and self.cards[i].color == card.color:
-                        tmp = self.cards.pop(i)
-                        self.card_amount = len(self.cards)
-                        return tmp
-        except TypeError:
-            print("You dont have this card in your deck")
-            # try again?
-            # pull card
+        for i in range(len(self.cards)):
+                if self.cards[i].number == card.number and self.cards[i].color == card.color:
+                    tmp = self.cards.pop(i)
+                    self.card_amount = len(self.cards)
+                    return tmp
+        return None
     
     def get_card(self,card) -> UnoCard:
-        try:
-            for i in range(len(self.cards)):
-                    if self.cards[i].number == card.number and self.cards[i].color == card.color:
-                        return self.cards[i]
-        except TypeError:
-            print("You dont have this card in your deck")
-            # try again?
+        for i in range(len(self.cards)):
+                if self.cards[i].number == card.number and self.cards[i].color == card.color:
+                    return self.cards[i]
+        return None
+        
     def get_all_cards(self) -> [UnoCard]:
         return self.cards
     
     def cards_to_string(self) -> str:
-        return ' '.join(f'{str(card.color)} {str(card.number)}'for card in self.get_all_cards())
+        return ' '.join(f'{card.to_string()}'for card in self.get_all_cards())
 
     
 
@@ -79,20 +76,25 @@ class Player:
         return self.cardstack.card_amount
     
     def get_card(self,unocard) -> UnoCard:
-        return self.cardstack.get_card(unocard)
+        card = self.cardstack.get_card(unocard)
+        if card is not None:
+            return card 
+        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
     
     def get_all_cards(self) -> [UnoCard]:
         return self.cardstack.get_all_cards()
+        
     
     #Removes and returns a specific card from the stack
     def play_card(self,unocard) -> UnoCard:
-        return self.cardstack.pop_specific_card(unocard)
+        card = self.cardstack.pop_specific_card(unocard)
+        if card is not None:
+            return card
+        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
 
 class Game:
-    #if color or number equal...
     #user input move finished...
     #for testing console input/output...
-    #two card stacks one for drawing one for field...
     #state...
     #keep track which players turn it is
     #check who is winning

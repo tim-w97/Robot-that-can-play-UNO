@@ -17,12 +17,6 @@ class GameTest:
         else:
             self.game_is_over = False
     
-    def test_func_remove_add(self):
-        card_stack_p1 = CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)])
-        p1 = Player("John Doe",card_stack_p1)
-        p1.add_card(UnoCard(2,Color.YELLOW))
-        p1.remove_card(UnoCard(2,Color.YELLOW))
-        print(f'Card count of player {p1.name} = {p1.get_card_count()}.')
     
     def match_cards(self,card_1,card_2)->bool:
         if(card_1.color == card_2.color or card_1.number == card_2.number):
@@ -50,4 +44,3 @@ main_stack = CardStack([UnoCard(4,Color.RED),UnoCard(3,Color.GREEN)])
 test_game = GameTest(player_1,player_2,main_stack)
 print(test_game.player_one.cardstack.cards_to_string())
 #test_game.run_game()
-#test_game.test_func_remove_add()
