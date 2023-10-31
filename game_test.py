@@ -48,5 +48,6 @@ player_1 = Player("John Doe",CardStack([UnoCard(1,Color.RED),UnoCard(4,Color.GRE
 player_2 = Player("Jane Doe",CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)]))
 main_stack = CardStack([UnoCard(4,Color.RED),UnoCard(3,Color.GREEN)])
 test_game = GameTest(player_1,player_2,main_stack)
-test_game.run_game()
-test_game.test_func_remove_add()
+print(test_game.player_one.cardstack.cards_to_string())
+#test_game.run_game()
+#test_game.test_func_remove_add()

@@ -55,6 +55,11 @@ class CardStack:
         except TypeError:
             print("You dont have this card in your deck")
             # try again?
+    def get_all_cards(self) -> [UnoCard]:
+        return self.cards
+    
+    def cards_to_string(self) -> str:
+        return ' '.join(f'{str(card.color)} {str(card.number)}'for card in self.get_all_cards())
 
     
 
@@ -75,6 +80,9 @@ class Player:
     
     def get_card(self,unocard) -> UnoCard:
         return self.cardstack.get_card(unocard)
+    
+    def get_all_cards(self) -> [UnoCard]:
+        return self.cardstack.get_all_cards()
     
     #Removes and returns a specific card from the stack
     def play_card(self,unocard) -> UnoCard:
