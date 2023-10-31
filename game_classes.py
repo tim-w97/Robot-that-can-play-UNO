@@ -76,4 +76,13 @@ class Game:
         self.main_stack = main_stack
 
     def match_cards(self,card_1,card_2)->bool:
-        pass
+        if(card_1.color == card_2.color or card_1.number == card_2.number):
+            return True
+        return False
+    
+    def set_winner(self,player):
+        if player.get_card_count() == 0:
+            print(f'{player.name} has won the game!')
+            self.game_is_over = True
+        else:
+            self.game_is_over = False
