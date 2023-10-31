@@ -35,13 +35,27 @@ class CardStack:
                     self.cards.remove(i)
         self.card_amount = len(self.cards)
     
-    def pop_card(self,card) -> UnoCard:
-        for i in range(len(self.cards)):
-                if self.cards[i].number == card.number and self.cards[i].color == card.color:
-                    tmp = self.cards.pop(i)
-                    self.card_amount = len(self.cards)
-                    return tmp
-        return None
+    def pop_specific_card(self,card) -> UnoCard:
+        try:
+            for i in range(len(self.cards)):
+                    if self.cards[i].number == card.number and self.cards[i].color == card.color:
+                        tmp = self.cards.pop(i)
+                        self.card_amount = len(self.cards)
+                        return tmp
+        except TypeError:
+            print("You dont have this card in your deck")
+            # try again?
+            # pull card
+    
+    def get_card(self,card) -> UnoCard:
+        try:
+            for i in range(len(self.cards)):
+                    if self.cards[i].number == card.number and self.cards[i].color == card.color:
+                        return self.cards[i]
+        except TypeError:
+            print("You dont have this card in your deck")
+            # try again?
+
     
 
 class Player:
@@ -59,8 +73,12 @@ class Player:
     def get_card_count(self) -> int:
         return self.cardstack.card_amount
     
+    def get_card(self,unocard) -> UnoCard:
+        return self.cardstack.get_card(unocard)
+    
+    #Removes and returns a specific card from the stack
     def play_card(self,unocard) -> UnoCard:
-        return self.cardstack.pop_card(unocard)
+        return self.cardstack.pop_specific_card(unocard)
 
 class Game:
     #if color or number equal...

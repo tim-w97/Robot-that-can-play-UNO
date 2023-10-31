@@ -33,7 +33,9 @@ class GameTest:
     def run_game(self):
         while True:
             while(not self.game_is_over):
-                print(self.match_cards(player_1.play_card(UnoCard(4,Color.GREEN)),main_stack.pop_card(UnoCard(3,Color.GREEN))))
+                print(self.match_cards(player_1.get_card(UnoCard(4,Color.GREEN)),main_stack.get_card(UnoCard(3,Color.GREEN))))
+                print(self.match_cards(player_1.play_card(UnoCard(4,Color.GREEN)),main_stack.pop_specific_card(UnoCard(3,Color.GREEN))))
+                print(self.match_cards(player_1.play_card(UnoCard(1,Color.RED)),main_stack.pop_specific_card(UnoCard(4,Color.RED))))
                 print(self.player_one.get_card_count())
                 print(f'gamestate:{self.game_is_over}')
                 self.set_winner(self.player_one)
@@ -44,7 +46,7 @@ class GameTest:
 
 player_1 = Player("John Doe",CardStack([UnoCard(1,Color.RED),UnoCard(4,Color.GREEN)]))
 player_2 = Player("Jane Doe",CardStack([UnoCard(1,Color.RED),UnoCard(7,Color.GREEN),UnoCard(5,Color.BLUE)]))
-main_stack = CardStack([UnoCard(1,Color.RED),UnoCard(3,Color.GREEN)])
+main_stack = CardStack([UnoCard(4,Color.RED),UnoCard(3,Color.GREEN)])
 test_game = GameTest(player_1,player_2,main_stack)
 test_game.run_game()
 test_game.test_func_remove_add()
