@@ -85,7 +85,9 @@ class Player:
     
     def get_all_cards(self) -> [UnoCard]:
         return self.cardstack.get_all_cards()
-        
+    
+    def cards_to_string(self) -> str:
+        return f'Player-> {self.name} Cards: ' + f' '.join(f'{card.to_string()} 'for card in self.get_all_cards())
     
     #Removes and returns a specific card from the stack
     def play_card(self,unocard) -> UnoCard:
@@ -99,7 +101,6 @@ class Game:
     #for testing console input/output...
     #state...
     #keep track which players turn it is
-    #check who is winning
     def __init__(self,player_one,player_two,main_stack):
         self.player_one = player_one
         self.player_two = player_two
@@ -116,3 +117,10 @@ class Game:
             self.game_is_over = True
         else:
             self.game_is_over = False
+
+    def turn(self,player):
+        #1. Display current players card
+        #2. Player Input
+        #3. Compare there cards with main stack
+        print(player.cards_to_string)
+        pass
