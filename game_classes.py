@@ -96,11 +96,16 @@ class Player:
             return card
         raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
 
+
+
 class Game:
+    
     def __init__(self,player_one,player_two,main_stack):
         self.player_one = player_one
         self.player_two = player_two
         self.main_stack = main_stack
+        self.game_is_over = False
+        self.current_player = player_one
 
     def match_cards(self,card_1,card_2)->bool:
         if(card_1.color == card_2.color or card_1.number == card_2.number):
@@ -119,7 +124,7 @@ class Game:
         print(player.cards_to_string)
 
         #2. Player Input TODO
-        move = input(f'{player.name} make your move!\n "play" + [Card] -> play card\n "pull" pull from stack')
+        move = input(f'{player.name} make your move!\n "play" + [Card] -> play card\n "pull" -> pull from stack\n')
         #played_card
         match move:
             case "play":
@@ -131,3 +136,11 @@ class Game:
                 return
 
         #3. Compare there cards with main stack or move pulled card to player stack
+    def run_game(self):
+        while True:
+            while(not self.game_is_over):
+                self.turn(self.current_player)
+                print(f'gamestate:{self.game_is_over}')
+                self.set_winner(self.player_one)
+            if input()=='q':
+                break
