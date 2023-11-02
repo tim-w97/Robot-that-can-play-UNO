@@ -1,6 +1,7 @@
 from enum import Enum
 
 class Color(Enum):
+
     BLACK = 0
     YELLOW = 1
     RED = 2
@@ -72,6 +73,7 @@ class Player:
     def remove_card(self,unocard):
         if self.cardstack.get_card(unocard) is not None:
             self.cardstack.remove_card(unocard)
+            return
         raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
     
     def get_card_count(self) -> int:
@@ -99,7 +101,7 @@ class Player:
 
 
 class Game:
-    
+
     def __init__(self,player_one,player_two,main_stack):
         self.player_one = player_one
         self.player_two = player_two
@@ -118,6 +120,9 @@ class Game:
             self.game_is_over = True
         else:
             self.game_is_over = False
+
+    def switch_current_player(self,player):
+        self.current_player = player
 
     def turn(self,player):
         #1. Display current players card
