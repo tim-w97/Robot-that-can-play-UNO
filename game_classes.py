@@ -66,11 +66,13 @@ class Player:
         self.name = name
         self.cardstack = cardstack
 
-    def add_card(self,card):
-        self.cardstack.add_card(card)
+    def add_card(self,unocard):
+        self.cardstack.add_card(unocard)
     
-    def remove_card(self,card):
-        self.cardstack.remove_card(card)
+    def remove_card(self,unocard):
+        if self.cardstack.get_card(unocard) is not None:
+            self.cardstack.remove_card(unocard)
+        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
     
     def get_card_count(self) -> int:
         return self.cardstack.card_amount
