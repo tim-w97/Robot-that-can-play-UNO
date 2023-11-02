@@ -97,10 +97,6 @@ class Player:
         raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
 
 class Game:
-    #user input move finished...
-    #for testing console input/output...
-    #state...
-    #keep track which players turn it is
     def __init__(self,player_one,player_two,main_stack):
         self.player_one = player_one
         self.player_two = player_two
@@ -120,7 +116,18 @@ class Game:
 
     def turn(self,player):
         #1. Display current players card
-        #2. Player Input
-        #3. Compare there cards with main stack
         print(player.cards_to_string)
-        pass
+
+        #2. Player Input TODO
+        move = input(f'{player.name} make your move!\n "play" + [Card] -> play card\n "pull" pull from stack')
+        #played_card
+        match move:
+            case "play":
+                print('play')
+            case "pull":
+                print('pull')
+            case _:
+                print('default')
+                return
+
+        #3. Compare there cards with main stack or move pulled card to player stack
