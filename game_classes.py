@@ -114,38 +114,32 @@ class Game:
             return True
         return False
     
-    def set_winner(self,player):
+    def check_winner(self,player)->bool:
         if player.get_card_count() == 0:
             print(f'{player.name} has won the game!')
             self.game_is_over = True
+            return self.game_is_over
         else:
             self.game_is_over = False
+            return self.game_is_over
+
 
     def switch_current_player(self,player):
         self.current_player = player
 
     def turn(self,player):
+        #TODO
         #1. Display current players card
         print(player.cards_to_string)
+        #2. Player Input
+        #3. Compare there cards with main stack or moved pulled card to player stack
+        #4. check if game is over
+        #5. if not over switch players
 
-        #2. Player Input TODO
-        move = input(f'{player.name} make your move!\n "play" + [Card] -> play card\n "pull" -> pull from stack\n')
-        #played_card
-        match move:
-            case "play":
-                print('play')
-            case "pull":
-                print('pull')
-            case _:
-                print('default')
-                return
-
-        #3. Compare there cards with main stack or move pulled card to player stack
     def run_game(self):
         while True:
             while(not self.game_is_over):
-                self.turn(self.current_player)
                 print(f'gamestate:{self.game_is_over}')
-                self.set_winner(self.player_one)
+                self.check_winner(self.player_one)
             if input()=='q':
                 break
