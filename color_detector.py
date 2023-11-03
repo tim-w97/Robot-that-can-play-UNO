@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import game_classes as gc
 from PIL import Image
 
 
@@ -16,10 +17,10 @@ def detect_color(card_img):
 
     # Define color ranges for Uno card colors
     color_ranges = {
-        "red": ([0, 100, 100], [10, 255, 255]),
-        "blue": ([100, 100, 100], [130, 255, 255]),
-        "green": ([40, 100, 100], [80, 255, 255]),
-        "yellow": ([20, 100, 100], [35, 255, 255]),
+        gc.Color.RED: ([0, 100, 100], [10, 255, 255]),
+        gc.Color.BLUE: ([100, 100, 100], [130, 255, 255]),
+        gc.Color.GREEN: ([40, 100, 100], [80, 255, 255]),
+        gc.Color.YELLOW: ([20, 100, 100], [35, 255, 255]),
     }
 
     # Check which color range the card falls into
