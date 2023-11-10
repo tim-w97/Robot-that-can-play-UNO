@@ -10,36 +10,39 @@ class Color(Enum):
 
 class UnoCard:
 
-    def __init__(self,number,color):
+    def __init__(self, number: int, color: Color):
         self.number = number
         self.color = color
     
-    def get_number(self)->int:
+    def get_number(self) -> int:
         return self.number
     
-    def get_color(self)->Color:
+    def get_color(self) -> Color:
         return self.color
     
-    def to_string(self)->str:
+    def to_string(self) -> str:
         return ''.join(f'{str(self.color)} {str(self.number)}')
+
+    def match(self, other: UnoCard):
+        return self.color == other.color or self.number == other.number
     
 class CardStack:
 
-    def __init__(self,cards):
+    def __init__(self, cards: [UnoCard]):
         self.cards = cards
         self.card_amount = len(self.cards)
 
-    def add_card(self,card):
+    def add_card(self, card: UnoCard):
         self.cards.append(card)
         self.card_amount = len(self.cards)
 
-    def remove_card(self,card):
+    def remove_card(self, card: UnoCard):
         for i in self.cards:
                 if i.number == card.number and i.color == card.color:
                     self.cards.remove(i)
         self.card_amount = len(self.cards)
     
-    def pop_specific_card(self,card) -> UnoCard:
+    def pop_specific_card(self, card: UnoCard) -> UnoCard:
         for i in range(len(self.cards)):
                 if self.cards[i].number == card.number and self.cards[i].color == card.color:
                     tmp = self.cards.pop(i)
@@ -47,7 +50,7 @@ class CardStack:
                     return tmp
         return None
     
-    def get_card(self,card) -> UnoCard:
+    def get_card(self, card: UnoCard) -> UnoCard:
         for i in range(len(self.cards)):
                 if self.cards[i].number == card.number and self.cards[i].color == card.color:
                     return self.cards[i]
@@ -59,57 +62,47 @@ class CardStack:
     def cards_to_string(self) -> str:
         return ' '.join(f'{card.to_string()}'for card in self.get_all_cards())
 
-    
-
+#TODO: Think about the member functions again. A human player don't need to control a stack. A robot does.
+# The game does not have to differ between players. But the each player has to signal the game, that they are done
+# with their turn.
+"""
+This class represents a player.
+"""
 class Player:
 
-    def __init__(self,name,cardstack):
+    def __init__(self, name: str):
         self.name = name
-        self.cardstack = cardstack
+    
+    """
+    This method is called from the game and needs to be overwritten.
+    """
+    def doMove(self) -> bool:
+        pass
 
-    def add_card(self,unocard):
-        self.cardstack.add_card(unocard)
-    
-    def remove_card(self,unocard):
-        if self.cardstack.get_card(unocard) is not None:
-            self.cardstack.remove_card(unocard)
-            return
-        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
-    
-    def get_card_count(self) -> int:
-        return self.cardstack.card_amount
-    
-    def get_card(self,unocard) -> UnoCard:
-        card = self.cardstack.get_card(unocard)
-        if card is not None:
-            return card 
-        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
-    
-    def get_all_cards(self) -> [UnoCard]:
-        return self.cardstack.get_all_cards()
-    
-    def cards_to_string(self) -> str:
-        return f'Player-> {self.name} Cards: ' + f' '.join(f'{card.to_string()} 'for card in self.get_all_cards())
-    
-    #Removes and returns a specific card from the stack
-    def play_card(self,unocard) -> UnoCard:
-        card = self.cardstack.pop_specific_card(unocard)
-        if card is not None:
-            return card
-        raise TypeError(f'{self.name} does not have the card {unocard.to_string()} in there deck.')
+class HumanPlayer(Player):
+    def __init__(self, name: str):
+        super(name)
+
+    """
+    Just wait for a signal.
+    """
+    @Overwrite
+    def doMove(self) -> bool:
+        pass
 
 
-
+"""
+This is the class to control the game. It is responsible for a game flow.
+"""
 class Game:
 
-    def __init__(self,player_one,player_two,main_stack):
-        self.player_one = player_one
-        self.player_two = player_two
-        self.main_stack = main_stack
-        self.game_is_over = False
-        self.current_player = player_one
+    def __init__(self, *args: [Player]):
+        if len(args) < 2: raise Exception("You need at least two players!")
+        self.players = args
+        self.activePlayer = args[0]
 
-    def match_cards(self,card_1,card_2)->bool:
+    # Refactored this method in UnoCard
+    def match_cards(self, card_1: UnoCard, card_2: UnoCard) -> bool:
         if(card_1.color == card_2.color or card_1.number == card_2.number):
             return True
         return False
