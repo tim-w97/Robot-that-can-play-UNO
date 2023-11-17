@@ -84,9 +84,9 @@ def pick_up_card(card_number):
     proxy.move(
         x=-0.01,
         y=-0.2,
-        z=0.12,
+        z=0.14,
         roll=rotation_90,
-        pitch=0.5,
+        pitch=0.6,
         yaw=-rotation_90
     )
 
@@ -94,8 +94,7 @@ def pick_up_card(card_number):
     proxy.moveToHomePose()
 
 
-for i in range(1, 7):
-    pick_up_card(i)
+pick_up_card(1)
 
 # disconnecting the robot
 proxy.disconnect()
