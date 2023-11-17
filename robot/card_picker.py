@@ -77,15 +77,25 @@ def pick_up_card(card_number):
         yaw=yaw
     )
 
-    # just for fun
-    proxy.moveJoints(1, -0.3, 1, 0, 0, 0)
+    # move to home pose, but little bit higher
+    proxy.moveJoints(0, 0.5, -0.7, 0, 0, 0)
+
+    # move to card stack with fixed joint values
+    proxy.moveJoints(
+        -1.7,
+        0,
+        -1.25,
+        0,
+        0.6,
+        1.5
+    )
 
     proxy.release()
 
     proxy.moveToHomePose()
 
 
-pick_up_card(3)
+pick_up_card(1)
 
 # disconnecting the robot
 proxy.disconnect()
