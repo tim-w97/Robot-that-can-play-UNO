@@ -21,8 +21,7 @@ z_pos_up = 0.2
 Detects the necessary card and return the card number
 """
 def get_card_slot(self):
-    #TODO: Add camera detection here to localize the position of the specific card.
-    pass
+    return 1
 
 """
 Calculates the poses for a specific slot.

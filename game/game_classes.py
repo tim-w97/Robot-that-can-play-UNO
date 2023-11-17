@@ -136,6 +136,7 @@ class Game:
     Detect the active card.
     """
     def update_game_stats(self):
+        # TODO: Update the stack and analyze the activeCard
         print("updated")
 
     """
