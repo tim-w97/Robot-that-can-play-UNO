@@ -1,5 +1,5 @@
 from control import RobotProxy
-from ./game_classes import CardStack, Player
+from ./game_classes import UnoCard, CardStack, Player
 from poses import Poses
 
 """
@@ -13,15 +13,30 @@ class RobotPlayer(Player):
         self.robot.connect()
 
         self.stack = CardStack([])
-        self.updateStack()
+        self.update_stack()
 
     """
-    This method has been overwritten.
+    This method has to be overwritten. Steps could be:
+    1. Calculate a playable card
+    2. Play the card
+    3. updateStack
     """
-    def handleTurn(self) -> bool:
-        pass
+    def handle_turn(self) -> bool:
+        card = self.get_next_card()
+        if card is None:
+            return False
 
-    def updateStack(self):
+        self.play_card(card)
+        self.update_stack()
+        return True
+
+    """
+    Returns the next playable card. If there is no card to play, it returns None instead.
+    """
+    def get_next_card(self) -> UnoCard:
+        self.card
+
+    def update_stack(self):
         pass
 
     """
@@ -34,8 +49,8 @@ class RobotPlayer(Player):
         6. Release the card
         7. Move to HomePose again
     """
-    def playCard(self, card):
-        pose = calculatePose(card)
+    def play_card(self, card: UnoCard):
+        pose = calculate_pose(card)
         self.robot.move(Poses.CARD_STACK)
         self.robot.grab()
         self.robot.move(Poses.HOME)
@@ -47,7 +62,7 @@ class RobotPlayer(Player):
     """
     Calculates the pose for the specific uno card.
     """
-    def calculatePose(self, card):
+    def calculate_pose(self, card: UnoCard):
         #TODO
         pass
 

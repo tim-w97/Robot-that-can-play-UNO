@@ -79,7 +79,7 @@ class Player:
     """
     This method is called from the game and needs to be overwritten.
     """
-    def handleTurn(self) -> bool:
+    def handle_turn(self) -> bool:
         pass
 
     def __str__(self) -> str:
@@ -92,7 +92,7 @@ class HumanPlayer(Player):
     """
     Waits on the player to type in the number of cards he has.
     """
-    def handleTurn(self) -> bool:
+    def handle_turn(self) -> bool:
         self.card_amount = int(input(f"It's your turn {self.name}. How many cards do you have?"))
 
 
@@ -138,6 +138,6 @@ class Game:
         self.update_game_stats()
         while not self.is_active_player_winning():
             player = self.get_next_player()
-            player.handleTurn()
+            player.handle_turn()
             self.update_game_stats()
         print(f"Congrats. {player} won the game.")
