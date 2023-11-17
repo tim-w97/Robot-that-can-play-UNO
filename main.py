@@ -27,11 +27,11 @@ while True:
 
         # Detect color for the card
         color = color_detector.detect_color(cropped_card)
-        print('Color of this card is ' + color)
+        print(f'Color of this card is {color}')
 
         # Detect number for the card
-        number = detection.process_uno_card(cropped_card)  # Assuming cropped_card is a valid image array
-        print("Number on this card is " + number)
+        #number = detection.process_uno_card(cropped_card)  # Assuming cropped_card is a valid image array
+        #print(f'Number on this card is " + {number}')
 
     cv.imshow('frame', cropped_cards[0])
 
