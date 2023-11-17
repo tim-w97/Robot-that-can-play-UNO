@@ -1,39 +1,42 @@
 import cv2 as cv
 import color_detector
+import detection
 import card_cropper
-import detector
 import config
 
 capture = cv.VideoCapture(config.camera_index)
 
-#print("color is: ", color_detection.color_detection("color_test_images/green.jpg"))
 if not capture.isOpened():
     print('Cannot open camera. Did you set the right camera index in config.py?')
     exit()
 
-# TODO: This could lead to performance issues, set a fps limit
 while True:
-    # Capture frame-by-frame
     ret, frame = capture.read()
 
-    # if frame is read correctly ret is True
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
         break
-
-    # operations on the frame belong here
 
     cropped_cards = card_cropper.crop_cards_from_img(frame)
 
     if cropped_cards is None:
         continue
+    
+    for cropped_card in cropped_cards:
+        cv.imshow('frame', cropped_card)
+
+        # Detect color for the card
+        color = color_detector.detect_color(cropped_card)
+        print(f'Color of this card is {color}')
+
+        # Detect number for the card
+        number = detection.process_uno_card(cropped_card)  # Assuming cropped_card is a valid image array
+        print(f'Number on this card is {number}')
 
     cv.imshow('frame', cropped_cards[0])
 
-    # press q to quit
     if cv.waitKey(1) == ord('q'):
         break
 
-# When everything done, release the capture
 capture.release()
 cv.destroyAllWindows()
