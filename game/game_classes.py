@@ -79,7 +79,10 @@ class Player:
     """
     This method is called from the game and needs to be overwritten.
     """
-    def handle_turn(self) -> bool:
+    def handle_turn(self, activeCard: UnoCard) -> bool:
+        pass
+
+    def cleanup(self):
         pass
 
     def __str__(self) -> str:
@@ -92,8 +95,11 @@ class HumanPlayer(Player):
     """
     Waits on the player to type in the number of cards he has.
     """
-    def handle_turn(self) -> bool:
+    def handle_turn(self, activeCard: UnoCard) -> bool:
         self.card_amount = int(input(f"It's your turn {self.name}. How many cards do you have?"))
+
+    def cleanup(self):
+        return True
 
 
 """
@@ -127,6 +133,7 @@ class Game:
 
     """
     This method analyze the main deck by card detection.
+    Detect the active card.
     """
     def update_game_stats(self):
         print("updated")
@@ -138,6 +145,10 @@ class Game:
         self.update_game_stats()
         while not self.is_active_player_winning():
             player = self.get_next_player()
-            player.handle_turn()
+            player.handle_turn(self.activeCard)
             self.update_game_stats()
         print(f"Congrats. {player} won the game.")
+
+        # Cleanup
+        for player in self.players:
+            player.cleanup()

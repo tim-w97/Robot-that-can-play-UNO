@@ -21,23 +21,34 @@ class RobotPlayer(Player):
     2. Play the card
     3. updateStack
     """
-    def handle_turn(self) -> bool:
+    def handle_turn(self, activeCard: UnoCard) -> bool:
         card = self.get_next_card()
-        if card is None:
-            return False
-
-        self.play_card(card)
-        self.update_stack()
+        canPlay = card is None
+        if canPlay:
+            self.play_card(card)
+        else:
+            # TODO: Later on, draw a card
+            pass
+        self.update_stack(card, canPlay)
         return True
 
     """
     Returns the next playable card. If there is no card to play, it returns None instead.
     """
-    def get_next_card(self) -> UnoCard:
-        self.card
+    def get_next_card(self, activeCard: UnoCard) -> UnoCard:
+        for card in self.stack.get_all_cards():
+            if card.match(activeCard): return card
+        return None
 
-    def update_stack(self):
-        pass
+    """
+    Updates the stack by calculation which card has been played or drawn. 
+    Later on, we can add camera detection here.
+    """
+    def update_stack(self, playedCard: UnoCard, hasPlayed: bool):
+        if hasPlayed:
+            self.stack.remove_card(playedCard)
+        else:
+            self.stack.add_card(playedCard)
 
     """
     Moves the robot to play a card.
@@ -63,11 +74,11 @@ class RobotPlayer(Player):
     Calculates the pose for the specific uno card.
     """
     def calculate_pose(self, card: UnoCard):
-        #TODO
+        #TODO: Add camera detection here to localize the position of the specific card.
         pass
 
     """
     This method is called, after the game is finished. This method does the cleanup.
     """
-    def finish(self):
+    def cleanup(self):
         self.robot.disconnect()
