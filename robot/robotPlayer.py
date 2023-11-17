@@ -1,5 +1,5 @@
 from control import RobotProxy
-from ./game_classes import UnoCard, CardStack, Player
+from game_classes import UnoCard, CardStack, Player
 from poses import Poses
 
 """

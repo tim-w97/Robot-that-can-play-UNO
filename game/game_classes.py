@@ -21,7 +21,7 @@ class UnoCard:
         return self.color
     
     def __str__(self) -> str:
-        return f'{str(self.color)} {str(self.number)}`
+        return f'{str(self.color)} {str(self.number)}' 
 
     def match(self, other):
         return self.color == other.color or self.number == other.number
@@ -60,7 +60,7 @@ class CardStack:
         return self.cards
     
     def cards_to_string(self) -> str:
-        return ' '.join(f'{card.to_string()}'for card in self.get_all_cards())
+        return ' '.join(f'{card.to_string()}' for card in self.get_all_cards())
 
 """
 This class represents a player. The game does not distinguish between a human and a robot.
