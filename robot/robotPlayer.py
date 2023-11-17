@@ -1,6 +1,76 @@
 from control import RobotProxy
 from game_classes import UnoCard, CardStack, Player
-from poses import Poses
+from pyniryo import PoseObject
+
+pickup_pitch = math.radians(25)
+rotation_90 = math.radians(90)
+
+x_pos_prepare = 0.12
+
+x_pos_min = 0.2
+x_pos_max = 0.35
+x_pos_middle = (x_pos_min + x_pos_max) / 2
+
+y_pos_min = -0.17
+y_pos_max = 0.17
+
+z_pos = 0.075
+z_pos_up = 0.2
+
+"""
+Detects the necessary card and return the card number
+"""
+def get_card_slot(self):
+    #TODO: Add camera detection here to localize the position of the specific card.
+    pass
+
+"""
+Calculates the poses for a specific slot.
+"""
+def calculate_poses(number: int) -> [PoseObject]:
+    if card_number not in range(1, 7):
+        raise ValueError(f"card number {card_number} doesn't exist.")
+
+    x_pos = x_pos_min
+    y_pos = y_pos_min
+    yaw = rotation_90
+
+    if card_number > 3:
+        y_pos = y_pos_max
+        yaw = -rotation_90
+
+    if card_number % 3 == 2:
+        x_pos = x_pos_middle
+
+    if card_number % 3 == 0:
+        x_pos = x_pos_max
+    
+    prepare_pose = PoseObject(
+        x=x_pos_prepare,
+        y=y_pos,
+        z=z_pos,
+        roll=rotation_90,
+        pitch=pickup_pitch,
+        yaw=yaw
+    )
+    card_pose = PoseObject(
+        x=x_pos,
+        y=y_pos,
+        z=z_pos,
+        roll=rotation_90,
+        pitch=pickup_pitch,
+        yaw=yaw
+    )
+    stack_pose = PoseObject(
+        x=x_pos,
+        y=y_pos,
+        z=z_pos_up,
+        roll=rotation_90,
+        pitch=pickup_pitch,
+        yaw=yaw
+    )
+    return [prepare_pose, card_pose, stack_pose]
+
 
 """
 The main task of the RobotPlayer is to say what the robot has to do during the game.
@@ -52,30 +122,42 @@ class RobotPlayer(Player):
 
     """
     Moves the robot to play a card.
-        1. Calculate the position of the playable card
-        2. Move to the card
-        3. Grab the card
-        4. Move to HomePose to prevent damage
-        5. Move to pose of the main deck
-        6. Release the card
-        7. Move to HomePose again
+        1. Calculate the number of a card
+        2. Calculate the poseObjects of the number
+        3. Pick up the card
+        4. Play the card
+        5. Return to the HomePose
     """
     def play_card(self, card: UnoCard):
-        pose = calculate_pose(card)
-        self.robot.move(Poses.CARD_STACK)
-        self.robot.grab()
-        self.robot.move(Poses.HOME)
+        number: int = get_card_slot(card)
+        poses: [PoseObject] = calculate_pose(number)
+        self.pick_up_card(poses)
+        self.robot.moveToHomePose()
 
-        self.robot.move(POSES.MAIN_STACK)
+    """
+    The robot picks up a card.
+    """
+    def pick_up_card(self, poses: [PoseObject]):
+        prepare, pick, stack = poses
+        # open the grabber in case it's closed
         self.robot.release()
-        self.robot.move(Poses.HOME)
 
-    """
-    Calculates the pose for the specific uno card.
-    """
-    def calculate_pose(self, card: UnoCard):
-        #TODO: Add camera detection here to localize the position of the specific card.
-        pass
+        # prepare to pick up a card
+        self.robot.move()
+
+        # pick up card with given card_number
+        self.robot.move(prepare)
+        self.robot.grab()
+
+        # move card up
+        self.robot.move(pick)
+
+        # move to home pose, but little bit higher
+        self.robot.moveJoints(0, 0.5, -0.7, 0, 0, 0)
+
+        # move to card stack
+        self.robot.move(stack)
+        self.robot.release()
 
     """
     This method is called, after the game is finished. This method does the cleanup.
