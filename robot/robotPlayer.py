@@ -1,25 +1,24 @@
 from control import RobotProxy
 from ./game_classes import CardStack, Player
+from poses import Poses
 
 """
 The main task of the RobotPlayer is to say what the robot has to do during the game.
 At init the robotplayer has to analyze its cards
 """
 class RobotPlayer(Player):
-    #TODO
-    deckPose = None
 
     def __init__(self, name: str):
         self.robot = RobotProxy()
         self.robot.connect()
 
-        self.stack = stack
+        self.stack = CardStack([])
         self.updateStack()
 
     """
-    This method is been overwritten.
+    This method has been overwritten.
     """
-    def doMove(self) -> bool:
+    def handleTurn(self) -> bool:
         pass
 
     def updateStack(self):
@@ -37,13 +36,13 @@ class RobotPlayer(Player):
     """
     def playCard(self, card):
         pose = calculatePose(card)
-        self.robot.move(pose)
+        self.robot.move(Poses.CARD_STACK)
         self.robot.grab()
-        self.robot.moveToHomePose()
+        self.robot.move(Poses.HOME)
 
-        self.robot.move(deckPose)
+        self.robot.move(POSES.MAIN_STACK)
         self.robot.release()
-        self.robot.moveToHomePose()
+        self.robot.move(Poses.HOME)
 
     """
     Calculates the pose for the specific uno card.

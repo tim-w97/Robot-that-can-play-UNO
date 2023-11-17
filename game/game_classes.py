@@ -21,7 +21,7 @@ class UnoCard:
         return self.color
     
     def __str__(self) -> str:
-        return ''.join(f'{str(self.color)} {str(self.number)}')
+        return f'{str(self.color)} {str(self.number)}`
 
     def match(self, other):
         return self.color == other.color or self.number == other.number
@@ -79,10 +79,10 @@ class Player:
     """
     This method is called from the game and needs to be overwritten.
     """
-    def doMove(self) -> bool:
+    def handleTurn(self) -> bool:
         pass
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 class HumanPlayer(Player):
@@ -92,7 +92,7 @@ class HumanPlayer(Player):
     """
     Waits on the player to type in the number of cards he has.
     """
-    def doMove(self) -> bool:
+    def handleTurn(self) -> bool:
         self.card_amount = int(input(f"It's your turn {self.name}. How many cards do you have?"))
 
 
@@ -138,6 +138,6 @@ class Game:
         self.update_game_stats()
         while not self.is_active_player_winning():
             player = self.get_next_player()
-            player.doMove()
+            player.handleTurn()
             self.update_game_stats()
         print(f"Congrats. {player} won the game.")
