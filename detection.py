@@ -2,9 +2,9 @@ import cv2
 import pytesseract
 import matplotlib.pyplot as plt
 
-def process_uno_card(image_path):
+def process_uno_card(image):
     # Load the image
-    image = cv2.imread(image_path)
+    #image = cv2.imread(image_path)
 
     if image is not None:
         # Resize the image while preserving its aspect ratio to fit within a 200x350 bounding box
