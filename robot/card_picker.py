@@ -14,7 +14,7 @@ x_pos_middle = (x_pos_min + x_pos_max) / 2
 y_pos_min = -0.17
 y_pos_max = 0.17
 
-z_pos = 0.065
+z_pos = 0.075
 z_pos_up = 0.2
 
 # setting up the robot
@@ -85,8 +85,7 @@ def pick_up_card(card_number):
     proxy.moveToHomePose()
 
 
-for i in range(1,7):
-    pick_up_card(i)
+pick_up_card(3)
 
 # disconnecting the robot
 proxy.disconnect()
