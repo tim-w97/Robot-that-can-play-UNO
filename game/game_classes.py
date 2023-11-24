@@ -74,7 +74,7 @@ class Player:
 
     def __init__(self, name: str):
         self.name = name
-        self.card_amount = 7
+        self.card_amount = 6
 
     """
     This method returns the current amount of cards
@@ -123,6 +123,22 @@ class Game:
         self.activePlayer = -1
         self.activeCard = initialCard
 
+        # only for testing
+        self.cards = [
+            UnoCard(2, Color.BLUE),
+            UnoCard(2, Color.GREEN),
+            UnoCard(4, Color.GREEN),
+            UnoCard(4, Color.RED),
+            UnoCard(5, Color.RED),
+            UnoCard(5, Color.YELLOW),
+            UnoCard(8, Color.YELLOW),
+            UnoCard(9, Color.YELLOW),
+            UnoCard(9, Color.BLUE),
+            UnoCard(6, Color.BLUE),
+            UnoCard(1, Color.BLUE)
+        ]
+        self.card_idx = 0
+
     def get_next_player(self) -> Player:
         if self.activePlayer == len(self.players) - 1:
             self.activePlayer = 0
@@ -143,6 +159,9 @@ class Game:
     """
     def update_game_stats(self):
         # TODO: Update the stack and analyze the activeCard
+        
+        self.activeCard = self.cards[self.card_idx]
+        self.card_idx += 1
         print("updated")
 
     """

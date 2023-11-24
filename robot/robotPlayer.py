@@ -1,5 +1,5 @@
 from control import RobotProxy
-from game.game_classes import UnoCard, CardStack, Player
+from game.game_classes import UnoCard, CardStack, Player, Color
 from pyniryo import PoseObject
 import math
 
@@ -21,8 +21,10 @@ z_pos_up = 0.2
 """
 Detects the necessary card and return the card number
 """
+val = 0
 def get_card_slot(self):
-    return 1
+    val += 1
+    return val
 
 """
 Calculates the poses for a specific slot.
@@ -84,7 +86,14 @@ class RobotPlayer(Player):
 
         self.robot.say(f"Hi my name {name}. I am glad to play with you.")
 
-        self.stack = CardStack([])
+        self.stack = CardStack([
+            UnoCard(2, Color.BLUE),
+            UnoCard(4, Color.GREEN),
+            UnoCard(5, Color.RED),
+            UnoCard(8, Color.YELLOW),
+            UnoCard(9, Color.BLUE),
+            UnoCard(1, Color.BLUE),
+        ])
         self.update_stack()
 
     """
