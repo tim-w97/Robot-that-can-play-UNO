@@ -37,6 +37,7 @@ class RobotProxy:
     def disconnect(self):
         self.checkConnection()
 
+        self.robot.say("Of course you don't mind me if I die. Bye", 0)
         self.robot.move_to_home_pose()
         self.robot.close_connection()
         
@@ -85,6 +86,11 @@ class RobotProxy:
     def release(self):
         self.checkConnection()
         self.robot.open_gripper()
+
+    # Speech
+    def say(self, text: str):
+        self.checkConnection(text, 0)
+        self.robot.say("")
 
     # functions for fun
     def killAllHuman(self):

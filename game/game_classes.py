@@ -36,6 +36,9 @@ class CardStack:
         self.cards.append(card)
         self.card_amount = len(self.cards)
 
+    def played_all_cards(self):
+        return self.card_amount
+
     def remove_card(self, card: UnoCard):
         for i in self.cards:
                 if i.number == card.number and i.color == card.color:
@@ -73,6 +76,9 @@ class Player:
         self.name = name
         self.card_amount = 7
 
+    """
+    This method returns the current amount of cards
+    """
     def get_card_count(self) -> int:
         return self.card_amount
     

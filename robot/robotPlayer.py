@@ -1,6 +1,7 @@
 from control import RobotProxy
-from game_classes import UnoCard, CardStack, Player
+from game.game_classes import UnoCard, CardStack, Player
 from pyniryo import PoseObject
+import math
 
 pickup_pitch = math.radians(25)
 rotation_90 = math.radians(90)
@@ -26,7 +27,7 @@ def get_card_slot(self):
 """
 Calculates the poses for a specific slot.
 """
-def calculate_poses(number: int) -> [PoseObject]:
+def calculate_poses(card_number: int) -> [PoseObject]:
     if card_number not in range(1, 7):
         raise ValueError(f"card number {card_number} doesn't exist.")
 
@@ -81,6 +82,8 @@ class RobotPlayer(Player):
         self.robot = RobotProxy()
         self.robot.connect()
 
+        self.robot.say(f"Hi my name {name}. I am glad to play with you.")
+
         self.stack = CardStack([])
         self.update_stack()
 
@@ -91,7 +94,7 @@ class RobotPlayer(Player):
     3. updateStack
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
-        card = self.get_next_card()
+        card = self.get_next_card(activeCard)
         canPlay = card is None
         if canPlay:
             self.play_card(card)
@@ -99,6 +102,12 @@ class RobotPlayer(Player):
             # TODO: Later on, draw a card
             pass
         self.update_stack(card, canPlay)
+
+        if self.card_amount == 1:
+            self.robot.say("Uno")
+        elif self.card_amount == 0:
+            self.robot.say("Uno Uno")
+
         return True
 
     """
@@ -118,6 +127,7 @@ class RobotPlayer(Player):
             self.stack.remove_card(playedCard)
         else:
             self.stack.add_card(playedCard)
+        self.card_amount = self.stack.card_amount
 
     """
     Moves the robot to play a card.
@@ -129,7 +139,7 @@ class RobotPlayer(Player):
     """
     def play_card(self, card: UnoCard):
         number: int = get_card_slot(card)
-        poses: [PoseObject] = calculate_pose(number)
+        poses: [PoseObject] = self.calculate_pose(number)
         self.pick_up_card(poses)
         self.robot.moveToHomePose()
 
