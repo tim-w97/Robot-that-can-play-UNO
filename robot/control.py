@@ -89,8 +89,8 @@ class RobotProxy:
 
     # Speech
     def say(self, text: str):
-        self.checkConnection(text, 0)
-        self.robot.say("")
+        self.checkConnection()
+        self.robot.say(text, 0)
 
     # functions for fun
     def killAllHuman(self):
