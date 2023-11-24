@@ -163,17 +163,17 @@ class RobotPlayer(Player):
         self.robot.release()
 
         # pick up card with given card_number
-        self.robot.move(prepare)
+        self.robot.move_pose(prepare)
 
         # move card up
-        self.robot.move(pick)
+        self.robot.move_pose(pick)
         self.robot.grab()
 
         # move to home pose, but little bit higher
         self.robot.moveJoints(0, 0.5, -0.7, 0, 0, 0)
 
         # move to card stack
-        self.robot.move(stack)
+        self.robot.move_pose(stack)
         self.robot.release()
 
     """

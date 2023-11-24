@@ -61,7 +61,7 @@ class RobotProxy:
         if not yaw: yaw = self.pose.yaw
         return PoseObject(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
     
-    def move(self, pose: PoseObject):
+    def move_pose(self, pose: PoseObject):
         self.checkConnection()
         self.robot.move_pose(pose)
         self.pose = pose
@@ -70,12 +70,12 @@ class RobotProxy:
     This is the convenient method to control the robot.
     move(self, x=self.pose.x) is not working. If you find a similiar version to get a default value from the self-pose, let me know.
     '''
-    # def move(self, x=False, y=False, z=False, roll=False, pitch=False, yaw=False):
-    #     self.checkConnection()
+    def move(self, x=False, y=False, z=False, roll=False, pitch=False, yaw=False):
+        self.checkConnection()
 
-    #     new_pose = self.updatePose(x, y, z, roll, pitch, yaw)
-    #     self.robot.move_pose(new_pose)
-    #     self.pose = new_pose
+        new_pose = self.updatePose(x, y, z, roll, pitch, yaw)
+        self.robot.move_pose(new_pose)
+        self.pose = new_pose
 
     def moveToHomePose(self):
         self.checkConnection()
