@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import game.game_classes as gc
+import game_classes as gc
 from PIL import Image
 
 

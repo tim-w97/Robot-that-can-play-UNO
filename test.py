@@ -1,5 +1,5 @@
-from game.game_classes import *
-from robot.robotPlayer import RobotPlayer
+from game_classes import *
+from robotPlayer import RobotPlayer
 
 #This class is just for testing the game logic itself and the classes and methodes inside game_logic.py#
 
