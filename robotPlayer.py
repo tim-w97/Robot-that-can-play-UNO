@@ -21,9 +21,7 @@ z_pos_up = 0.2
 """
 Detects the necessary card and return the card number
 """
-val = 0
-def get_card_slot(self):
-    val += 1
+def get_card_slot(card: UnoCard, val):
     return val
 
 """
@@ -64,12 +62,12 @@ def calculate_poses(card_number: int) -> [PoseObject]:
         yaw=yaw
     )
     stack_pose = PoseObject(
-        x=x_pos,
-        y=y_pos,
-        z=z_pos_up,
+        x=-0.01,
+        y=-0.2,
+        z=0.14,
         roll=rotation_90,
-        pitch=pickup_pitch,
-        yaw=yaw
+        pitch=0.6,
+        yaw=-rotation_90
     )
     return [prepare_pose, card_pose, stack_pose]
 
@@ -81,6 +79,7 @@ At init the robotplayer has to analyze its cards
 class RobotPlayer(Player):
 
     def __init__(self, name: str):
+        super().__init__(name)
         self.robot = RobotProxy()
         self.robot.connect()
 
@@ -94,7 +93,7 @@ class RobotPlayer(Player):
             UnoCard(9, Color.BLUE),
             UnoCard(1, Color.BLUE),
         ])
-        self.update_stack()
+        self.val = 1
 
     """
     This method has to be overwritten. Steps could be:
@@ -104,12 +103,14 @@ class RobotPlayer(Player):
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
         card = self.get_next_card(activeCard)
-        canPlay = card is None
-        if canPlay:
-            self.play_card(card)
-        else:
-            # TODO: Later on, draw a card
-            pass
+        canPlay = True
+        self.play_card(card)
+        # canPlay = card is None
+        # if canPlay:
+        #     self.play_card(card)
+        # else:
+        #     # TODO: Later on, draw a card
+        #     pass
         self.update_stack(card, canPlay)
 
         if self.card_amount == 1:
@@ -147,8 +148,9 @@ class RobotPlayer(Player):
         5. Return to the HomePose
     """
     def play_card(self, card: UnoCard):
-        number: int = get_card_slot(card)
-        poses: [PoseObject] = self.calculate_pose(number)
+        number: int = get_card_slot(card, self.val)
+        self.val += 1
+        poses: [PoseObject] = calculate_poses(number)
         self.pick_up_card(poses)
         self.robot.moveToHomePose()
 
@@ -160,15 +162,12 @@ class RobotPlayer(Player):
         # open the grabber in case it's closed
         self.robot.release()
 
-        # prepare to pick up a card
-        self.robot.move()
-
         # pick up card with given card_number
         self.robot.move(prepare)
-        self.robot.grab()
 
         # move card up
         self.robot.move(pick)
+        self.robot.grab()
 
         # move to home pose, but little bit higher
         self.robot.moveJoints(0, 0.5, -0.7, 0, 0, 0)

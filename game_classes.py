@@ -125,6 +125,7 @@ class Game:
 
         # only for testing
         self.cards = [
+            UnoCard(3, Color.BLUE),
             UnoCard(2, Color.BLUE),
             UnoCard(2, Color.GREEN),
             UnoCard(4, Color.GREEN),
@@ -162,7 +163,7 @@ class Game:
         
         self.activeCard = self.cards[self.card_idx]
         self.card_idx += 1
-        print("updated")
+        print(str(self.activeCard))
 
     """
     This is the main method to call.
