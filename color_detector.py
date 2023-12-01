@@ -4,8 +4,16 @@ from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 
+from enum import Enum
+from colormath.color_objects import sRGBColor
 
 def determine_color(color_bgr):
+    class UnoColors(Enum):
+        RED = sRGBColor(198, 42, 53)
+        YELLOW = sRGBColor(239, 211, 46)
+        GREEN = sRGBColor(88, 166, 54)
+        BLUE = sRGBColor(3, 93, 172)
+
     color_to_compare = sRGBColor(color_bgr[2], color_bgr[1], color_bgr[0])
 
     min_diff = None
