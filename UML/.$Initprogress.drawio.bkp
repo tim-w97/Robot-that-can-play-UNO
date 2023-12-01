@@ -1,0 +1,53 @@
+<mxfile host="Electron" modified="2023-12-01T09:46:49.789Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="rPQO8mVVwKVf8qPYDk8E" version="22.1.2" type="device">
+  <diagram name="Page-1" id="zqJ8dTYInIm52E_tpVhm">
+    <mxGraphModel dx="555" dy="337" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-1" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="270" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-2" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" edge="1" source="hyfGZD0PRPe6MA51b-Nl-1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="355" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="hyfGZD0PRPe6MA51b-Nl-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="355.0000000000001" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-3" value="Init AI" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="300" y="360" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-5" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="470" as="sourcePoint" />
+            <mxPoint x="540" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-6" value="Create HumanPlayer" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="330" y="525" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-7" value="Create RobotPlayer" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="470" y="525" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-8" value="Detect InitCard" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" y="525" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.464;entryY=0.016;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="hyfGZD0PRPe6MA51b-Nl-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="500" as="targetPoint" />
+            <mxPoint x="250" y="470" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hyfGZD0PRPe6MA51b-Nl-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.464;entryY=0.016;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="385.24" y="525" as="targetPoint" />
+            <mxPoint x="384.24" y="469" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
