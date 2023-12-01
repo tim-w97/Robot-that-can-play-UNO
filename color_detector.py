@@ -1,34 +1,26 @@
-import cv2
-import numpy as np
-import game_classes as gc
-from PIL import Image
+from uno_colors import UnoColors
+
+from colormath.color_objects import sRGBColor, LabColor
+from colormath.color_conversions import convert_color
+from colormath.color_diff import delta_e_cie2000
 
 
-def detect_color(card_img):
-    # Get the size (width and height) of the image
-    height, width, channels = card_img.shape
+def determine_color(color_bgr):
+    color_to_compare = sRGBColor(color_bgr[2], color_bgr[1], color_bgr[0])
 
-    # Crop the card region
-    # You'll need to define the coordinates for cropping
-    card = card_img[0:height, 0:width]
+    min_diff = None
+    color = None
 
-    # Convert to HSV color space
-    hsv = cv2.cvtColor(card, cv2.COLOR_BGR2HSV)
+    for uno_color in UnoColors:
+        # Convert from RGB to Lab Color Space
+        color1_lab = convert_color(color_to_compare, LabColor)
+        color2_lab = convert_color(uno_color.value, LabColor)
 
-    # Define color ranges for Uno card colors
-    color_ranges = {
-        gc.Color.RED: ([0, 100, 100], [10, 255, 255]),
-        gc.Color.BLUE: ([100, 100, 100], [130, 255, 255]),
-        gc.Color.GREEN: ([40, 100, 100], [80, 255, 255]),
-        gc.Color.YELLOW: ([20, 100, 100], [35, 255, 255]),
-    }
+        # Find the color difference
+        diff = delta_e_cie2000(color1_lab, color2_lab)
 
-    # Check which color range the card falls into
-    for color, (lower, upper) in color_ranges.items():
-        lower = np.array(lower, dtype=np.uint8)
-        upper = np.array(upper, dtype=np.uint8)
-        mask = cv2.inRange(hsv, lower, upper)
-        if mask.sum() > 10:  # You may need to adjust the threshold
-            return color
+        if min_diff is None or diff < min_diff:
+            min_diff = diff
+            color = uno_color
 
-    return "not recognized"
+    return color

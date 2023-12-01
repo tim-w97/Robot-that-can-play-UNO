@@ -21,6 +21,7 @@ z_pos_up = 0.2
 """
 Detects the necessary card and return the card number
 """
+# TODO: Map the actual card to the cardslot
 def get_card_slot(card: UnoCard, val):
     return val
 
@@ -93,7 +94,7 @@ class RobotPlayer(Player):
             UnoCard(9, Color.BLUE),
             UnoCard(1, Color.BLUE),
         ])
-        self.val = 1
+        self.val = 1 # TODO: After deleting
 
     """
     This method has to be overwritten. Steps could be:
