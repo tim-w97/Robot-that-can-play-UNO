@@ -77,17 +77,15 @@ At init the robotplayer has to analyze its cards
 """
 class RobotPlayer(Player):
 
-    def __init__(self, name: str,cards = [(UnoCard,int)]):
+    def __init__(self, name: str,maped_cards = [(UnoCard,int)]):
         super().__init__(name)
         self.robot = RobotProxy()
-        self.robot.connect()
-
-        self.robot.say(f"Hi my name {name}. I am glad to play with you.")
-
-        uno_cards = [Unocard for Unocard,p in cards]
+        self.maped_cards = maped_cards
+        uno_cards = [Unocard for Unocard,p in maped_cards]
         self.uno_cards = uno_cards
         self.stack = CardStack(uno_cards)
-        self.val = 1 # TODO: After deleting
+        self.robot.connect()
+        self.robot.say(f"Hi my name {name}. I am glad to play with you.")
 
     """
     This method has to be overwritten. Steps could be:
