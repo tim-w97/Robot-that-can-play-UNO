@@ -63,7 +63,7 @@ class CardStack:
         return self.cards
     
     def cards_to_string(self) -> str:
-        return ' '.join(f'{card.to_string()}' for card in self.get_all_cards())
+        return ' '.join(f'{str(card)}' for card in self.get_all_cards())
 
 """
 This class represents a player. The game does not distinguish between a human and a robot.

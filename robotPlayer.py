@@ -21,9 +21,7 @@ z_pos_up = 0.2
 """
 Detects the necessary card and return the card number
 """
-# TODO: Map the actual card to the cardslot
-def get_card_slot(card: UnoCard, val):
-    return val
+
 
 """
 Calculates the poses for a specific slot.
@@ -79,21 +77,16 @@ At init the robotplayer has to analyze its cards
 """
 class RobotPlayer(Player):
 
-    def __init__(self, name: str):
+    def __init__(self, name: str,cards = [(UnoCard,int)]):
         super().__init__(name)
         self.robot = RobotProxy()
         self.robot.connect()
 
         self.robot.say(f"Hi my name {name}. I am glad to play with you.")
 
-        self.stack = CardStack([
-            UnoCard(2, Color.BLUE),
-            UnoCard(4, Color.GREEN),
-            UnoCard(5, Color.RED),
-            UnoCard(8, Color.YELLOW),
-            UnoCard(9, Color.BLUE),
-            UnoCard(1, Color.BLUE),
-        ])
+        uno_cards = [Unocard for Unocard,p in cards]
+        self.uno_cards = uno_cards
+        self.stack = CardStack(uno_cards)
         self.val = 1 # TODO: After deleting
 
     """
@@ -106,12 +99,6 @@ class RobotPlayer(Player):
         card = self.get_next_card(activeCard)
         canPlay = True
         self.play_card(card)
-        # canPlay = card is None
-        # if canPlay:
-        #     self.play_card(card)
-        # else:
-        #     # TODO: Later on, draw a card
-        #     pass
         self.update_stack(card, canPlay)
 
         if self.card_amount == 1:
