@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 from image_transformer import transform_image
 from color_detector import determine_color
+from game_classes import UnoCard
 
 import cv2
 import config
@@ -14,6 +15,8 @@ This methods predicts all uno cards from the given image
 3. Return an array of tuples (Uno Card, Position)
 """
 def predict_uno_cards(image):
+    predicted_uno_cards = []
+
     # ignore this code (start)
     # but leave it here so the color detector works
     def patch(a):
@@ -62,12 +65,16 @@ def predict_uno_cards(image):
         ]
 
         color = determine_color(color_bgr)
+        uno_card = UnoCard(card_number, color)
+        predicted_uno_cards.append(uno_card)
 
-        print(card_number)
-        print(color)
+    return predicted_uno_cards
 
 
 # test the method
-predict_uno_cards(
+cards = predict_uno_cards(
     image=cv2.imread('uno cards test image.jpeg')
 )
+
+for card in cards:
+    print(card)
