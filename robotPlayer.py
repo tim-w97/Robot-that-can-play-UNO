@@ -134,10 +134,8 @@ class RobotPlayer(Player):
         4. Play the card
         5. Return to the HomePose
     """
-    def play_card(self, card: UnoCard):
-        number: int = get_card_slot(card, self.val)
-        self.val += 1
-        poses: [PoseObject] = calculate_poses(number)
+    def play_card(self, position):
+        poses: [PoseObject] = calculate_poses(position)
         self.pick_up_card(poses)
         self.robot.moveToHomePose()
 
