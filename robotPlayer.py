@@ -78,10 +78,10 @@ At init the robotplayer has to analyze its cards
 """
 class RobotPlayer(Player):
 
-    def __init__(self, name: str, cards = [(UnoCard,int)]):
+    def __init__(self, name: str, cards: [(UnoCard,int)]):
         super().__init__(name)
         self.robot = RobotProxy()
-        self.card_stack = CardStack(cards)
+        self.stack = CardStack(cards)
         self.robot.connect()
         self.robot.say(f"Hi my name {name}. I am glad to play with you.")
 
@@ -93,9 +93,10 @@ class RobotPlayer(Player):
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
         card = self.get_next_card(activeCard)
-        canPlay = card is None
+        canPlay = not card is None
         if canPlay:
-            self.play_card(card)
+            c, position = card
+            self.play_card(position)
         self.update_stack(card, canPlay)
 
         if self.card_amount == 1:
@@ -108,9 +109,10 @@ class RobotPlayer(Player):
     """
     Returns the next playable card. If there is no card to play, it returns None instead.
     """
-    def get_next_card(self, activeCard: UnoCard) -> UnoCard:
+    def get_next_card(self, activeCard: UnoCard) -> (UnoCard, int):
         for card in self.stack.get_all_cards():
-            if card.match(activeCard): return card
+            c, p = card
+            if c.match(activeCard): return card
         return None
 
     """
@@ -120,8 +122,7 @@ class RobotPlayer(Player):
     def update_stack(self, playedCard: UnoCard, hasPlayed: bool):
         if hasPlayed:
             self.stack.remove_card(playedCard)
-        else:
-            self.stack.add_card(playedCard)
+
         self.card_amount = self.stack.card_amount
 
     """

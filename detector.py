@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 from image_transformer import transform_image
 from color_detector import determine_color
-from uno_classes import UnoCard
+from uno_classes import UnoCard, Color
 
 import cv2
 import config
@@ -85,7 +85,8 @@ def predict_uno_cards(camera_index = config.robot_camera):
         predicted_uno_cards.append((uno_card, (bounding_box[0], bounding_box[1])))
 
     if camera_index == config.stack_camera:
-        return predicted_uno_cards
+        # return predicted_uno_cards
+        return [(UnoCard(color=Color.BLUE, number=9), 2)]
 
     return sort(predicted_uno_cards)
 
@@ -128,10 +129,7 @@ def sort(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
                 smallestIdx = j     
         tmp = results[smallestIdx]
         results[smallestIdx] = results[i]
-        results[i] = tmp  
-
-    for card, (x, y) in results:
-        print(f'Card<{card}>, x: {x}, y: {y}')
+        results[i] = tmp
 
     # 3. transform cards
     sol = calculate_positions(results)
