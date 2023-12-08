@@ -28,24 +28,26 @@ class UnoCard:
     
 class CardStack:
 
-    def __init__(self, cards: [UnoCard]):
+    def __init__(self, cards: [(UnoCard, int)]):
         self.cards = cards
         self.card_amount = len(self.cards)
 
-    def add_card(self, card: UnoCard):
-        self.cards.append(card)
-        self.card_amount = len(self.cards)
+    def add_card(self, card: UnoCard, position: int):
+        card_position = (card, position)
+        self.cards.append(card_position)
+        self.card_amount += 1
 
     def played_all_cards(self):
         return self.card_amount
 
-    def remove_card(self, card: UnoCard):
-        for i in self.cards:
-                if i.number == card.number and i.color == card.color:
-                    self.cards.remove(i)
-        self.card_amount = len(self.cards)
+    def remove_card(self, removed_card: UnoCard):
+        for card in self.cards:
+            unocard,_ = card
+            if unocard.match(removed_card):
+                self.cards.remove(card)
     
-    def pop_specific_card(self, card: UnoCard) -> UnoCard:
+    # deprecated
+    def pop_specific_card(self, card: UnoCard) -> (UnoCard, int):
         for i in range(len(self.cards)):
                 if self.cards[i].number == card.number and self.cards[i].color == card.color:
                     tmp = self.cards.pop(i)
@@ -53,13 +55,14 @@ class CardStack:
                     return tmp
         return None
     
-    def get_card(self, card: UnoCard) -> UnoCard:
+    # deprecated
+    def get_card(self, card: UnoCard) -> (UnoCard, int):
         for i in range(len(self.cards)):
                 if self.cards[i].number == card.number and self.cards[i].color == card.color:
                     return self.cards[i]
         return None
-        
-    def get_all_cards(self) -> [UnoCard]:
+     
+    def get_all_cards(self) -> [(UnoCard,int)]:
         return self.cards
     
     def cards_to_string(self) -> str:

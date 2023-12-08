@@ -95,8 +95,9 @@ class RobotPlayer(Player):
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
         card = self.get_next_card(activeCard)
-        canPlay = True
-        self.play_card(card)
+        canPlay = card is None
+        if canPlay:
+            self.play_card(card)
         self.update_stack(card, canPlay)
 
         if self.card_amount == 1:
