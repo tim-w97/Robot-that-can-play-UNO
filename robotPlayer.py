@@ -1,6 +1,7 @@
 from control import RobotProxy
-from uno_classes import UnoCard, CardStack, Player, Color
+from uno_classes import UnoCard, CardStack, Color
 from pyniryo import PoseObject
+from player import Player
 import math
 
 pickup_pitch = math.radians(25)
