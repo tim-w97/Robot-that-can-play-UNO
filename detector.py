@@ -10,11 +10,12 @@ import numpy
 """
 This methods predicts all uno cards from the given image
 
-1. Transform the given image so the number detection works better
-2. Predict all uno cards and their corresponding positions (1-6)
-3. Return an array of tuples (Uno Card, Position)
+1. Capture a image from the given camera
+2. If it's the robot camera, transform the image so the number detection works better
+3. Predict all uno cards and their corresponding positions (1-6)
+4. Return an array of tuples (Uno Card, Position)
 """
-def predict_uno_cards(image):
+def predict_uno_cards(camera_index = config.robot_camera):
     # TODO: Kameraindex angeben
     predicted_uno_cards = []
 
@@ -27,11 +28,24 @@ def predict_uno_cards(image):
 
     # ignore this code (end)
 
+    # capture the image
+    camera = cv2.VideoCapture(camera_index)
+
+    ret, frame = camera.read()
+
+    if not ret:
+        print("Failed to capture the image!")
+        return []
+
     # Load a model and the card numbers (classes)
     model = YOLO(config.model_path)
     card_numbers = model.names
 
-    transformed_image = transform_image(image)
+    # if it's the robot cam, we need to change the perspective so the uno card detection works better
+    if camera_index == config.robot_camera:
+        transformed_image = transform_image(frame)
+    else:
+        transformed_image = frame
 
     # predict all uno cards from the image
     results = model(transformed_image)
@@ -147,11 +161,9 @@ def calculate_positions(entries: [(UnoCard, (float, float))]) -> [(UnoCard, int)
             idx = 6
     return sol
 
-
 # test the method
 # cards = predict_uno_cards(
 #     image=cv2.imread('uno cards test image.jpeg')
 # )
-
 # for card, position in cards:
 #     print(card, position)
