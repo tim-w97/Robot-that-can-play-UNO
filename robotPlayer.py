@@ -1,5 +1,5 @@
 from control import RobotProxy
-from game_classes import UnoCard, CardStack, Player, Color
+from uno_classes import UnoCard, CardStack, Player, Color
 from pyniryo import PoseObject
 import math
 

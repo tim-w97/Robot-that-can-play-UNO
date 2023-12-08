@@ -2,7 +2,7 @@ from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 from enum import Enum
-from game_classes import Color
+from uno_classes import Color
 
 
 def determine_color(color_bgr):

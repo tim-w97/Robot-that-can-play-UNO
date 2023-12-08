@@ -1,9 +1,10 @@
-from ultralytics import YOLO
-
-import cv2
 import config
-from game_classes import *
+import cv2
+
+from uno_classes import *
 from robotPlayer import RobotPlayer
+from player import HumanPlayer
+from game import Game
 
 from detector import predict_uno_cards
 

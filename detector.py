@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 from image_transformer import transform_image
 from color_detector import determine_color
-from game_classes import UnoCard
+from uno_classes import UnoCard
 
 import cv2
 import config
