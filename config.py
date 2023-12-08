@@ -1,5 +1,6 @@
 # general
-camera_index = 0
+stack_camera = 0
+robot_camera = 1
 gray_image_thresh = 130
 
 # contours

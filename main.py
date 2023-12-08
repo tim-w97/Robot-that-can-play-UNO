@@ -5,18 +5,20 @@ import config
 from game_classes import *
 from robotPlayer import RobotPlayer
 
+from detector import predict_uno_cards
+
 """
 TODO:
 - Analyze the initial card
 - Analyze the robot's cardstack
 """
 
-# init the model
-model = YOLO(config.model_path)
+# predict cards
+initialCard = predict_uno_cards(config.stack_camera)
+cards = predict_uno_cards(config.robot_camera)
 
 # init the players
-initialCard = UnoCard(3, Color.BLUE)
-robotPlayer = RobotPlayer("Rob")
+robotPlayer = RobotPlayer("Rob", cards)
 player = HumanPlayer("Lukas")
 
 # run the game
