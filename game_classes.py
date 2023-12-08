@@ -1,4 +1,7 @@
 from enum import Enum
+from detector import predict_uno_cards
+
+import config
 
 class Color(Enum):
 
@@ -126,23 +129,6 @@ class Game:
         self.activePlayer = -1
         self.activeCard = initialCard
 
-        # only for testing
-        self.cards = [
-            UnoCard(3, Color.BLUE),
-            UnoCard(2, Color.BLUE),
-            UnoCard(2, Color.GREEN),
-            UnoCard(4, Color.GREEN),
-            UnoCard(4, Color.RED),
-            UnoCard(5, Color.RED),
-            UnoCard(5, Color.YELLOW),
-            UnoCard(8, Color.YELLOW),
-            UnoCard(9, Color.YELLOW),
-            UnoCard(9, Color.BLUE),
-            UnoCard(6, Color.BLUE),
-            UnoCard(1, Color.BLUE)
-        ]
-        self.card_idx = 0
-
     def get_next_player(self) -> Player:
         if self.activePlayer == len(self.players) - 1:
             self.activePlayer = 0
@@ -163,9 +149,9 @@ class Game:
     """
     def update_game_stats(self):
         # TODO: Update the stack and analyze the activeCard
-        
-        self.activeCard = self.cards[self.card_idx]
-        self.card_idx += 1
+        cards = predict_uno_cards(config.stack_camera)
+        card, _ = cards[0]
+        self.activeCard = card
         print(str(self.activeCard))
 
     """
