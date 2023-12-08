@@ -84,7 +84,11 @@ def predict_uno_cards(camera_index = config.robot_camera):
 
         predicted_uno_cards.append((uno_card, (bounding_box[0], bounding_box[1])))
 
+    if camera_index == config.stack_camera:
+        return predicted_uno_cards
+
     return sort(predicted_uno_cards)
+
 
 def sort(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
     # 1. remove duplicates
