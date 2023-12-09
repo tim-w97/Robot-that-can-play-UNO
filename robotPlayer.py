@@ -20,11 +20,6 @@ z_pos = 0.075
 z_pos_up = 0.2
 
 """
-Detects the necessary card and return the card number
-"""
-
-
-"""
 Calculates the poses for a specific slot.
 """
 def calculate_poses(card_number: int) -> [PoseObject]:
@@ -92,10 +87,11 @@ class RobotPlayer(Player):
     3. updateStack
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
-        card = self.get_next_card(activeCard)
-        canPlay = not card is None
+        card_position = self.get_next_card(activeCard)
+        card, position = card_position
+    
+        canPlay = not card_position is None
         if canPlay:
-            c, position = card
             self.play_card(position)
         self.update_stack(card, canPlay)
 
@@ -110,14 +106,13 @@ class RobotPlayer(Player):
     Returns the next playable card. If there is no card to play, it returns None instead.
     """
     def get_next_card(self, activeCard: UnoCard) -> (UnoCard, int):
-        for card in self.stack.get_all_cards():
-            c, p = card
-            if c.match(activeCard): return card
+        for card_position in self.stack.get_all_cards():
+            card, position = card_position
+            if card.match(activeCard): return card_position
         return None
 
     """
     Updates the stack by calculation which card has been played or drawn. 
-    Later on, we can add camera detection here.
     """
     def update_stack(self, playedCard: UnoCard, hasPlayed: bool):
         if hasPlayed:

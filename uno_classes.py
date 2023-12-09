@@ -24,7 +24,7 @@ class UnoCard:
         return f'{str(self.color)} {str(self.number)}' 
 
     def match(self, other):
-        return self.color == other.color or self.number == other.number
+        return self.color == other.color or int(self.number) == int(other.number)
     
 class CardStack:
 

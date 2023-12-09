@@ -13,11 +13,11 @@ How to use Game:
 """
 class Game:
 
-    def __init__(self, *args: [Player], initialCard: UnoCard):
+    def __init__(self, *args: [Player]):
         if len(args) < 2: raise Exception("You need at least two players!")
         self.players = args
         self.activePlayer = -1
-        self.activeCard = initialCard
+        self.activeCard = None
 
     def get_next_player(self) -> Player:
         if self.activePlayer == len(self.players) - 1:
@@ -38,11 +38,9 @@ class Game:
     Detect the active card.
     """
     def update_game_stats(self):
-        # TODO: Update the stack and analyze the activeCard
-        cards = predict_uno_cards(config.stack_camera)
-        card, _ = cards[0]
+        card, _ = predict_uno_cards(config.stack_camera)[0]
         self.activeCard = card
-        print(str(self.activeCard))
+        print(f'Aktuelle Karte: {str(self.activeCard)}')
 
     """
     This is the main method to call.

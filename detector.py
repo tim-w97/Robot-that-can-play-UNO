@@ -15,7 +15,7 @@ This methods predicts all uno cards from the given image
 3. Predict all uno cards and their corresponding positions (1-6)
 4. Return an array of tuples (Uno Card, Position)
 """
-def predict_uno_cards(camera_index = config.robot_camera):
+def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     # TODO: Kameraindex angeben
     predicted_uno_cards = []
 
@@ -88,53 +88,59 @@ def predict_uno_cards(camera_index = config.robot_camera):
         # return predicted_uno_cards
         return [(UnoCard(color=Color.BLUE, number=9), 2)]
 
-    return sort(predicted_uno_cards)
+    return map_to_position(predicted_uno_cards)
 
 
-def sort(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
+def map_to_position(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
     # 1. remove duplicates
     results = remove_duplicates(results)
 
-    # 2. sortiere nach y
-    length = len(results)
-    for i in range(0, length):
-        smallestIdx = i
-        for j in range(i + 1, length):
-            _, (s_x,s_y) = results[smallestIdx]
-            _, (r_x, r_y) = results[j]
-            if r_y < s_y:
-                smallestIdx = j
-        tmp = results[smallestIdx]
-        results[smallestIdx] = results[i]
-        results[i] = tmp
+    # 2. sort by y
+    sort_y(results)
 
-    # 3. sortiere alle karten nach x
-    for i in range(0, 3):
-        smallestIdx = i
-        for j in range(i + 1, 3):
-            _, (s_x,s_y) = results[smallestIdx]
-            _, (r_x, r_y) = results[j]
-            if r_x < s_x:
-                smallestIdx = j     
-        tmp = results[smallestIdx]
-        results[smallestIdx] = results[i]
-        results[i] = tmp  
-
-    for i in range(3, 6):
-        smallestIdx = i
-        for j in range(i + 1, 6):
-            _, (s_x,s_y) = results[smallestIdx]
-            _, (r_x, r_y) = results[j]
-            if r_x < s_x:
-                smallestIdx = j     
-        tmp = results[smallestIdx]
-        results[smallestIdx] = results[i]
-        results[i] = tmp
+    # 3. sort by x
+    sort_x(results)
 
     # 3. transform cards
     sol = calculate_positions(results)
 
     return sol
+
+def sort_y(entries: [(UnoCard, float, float)]) -> None:
+    length = len(entries)
+    for i in range(0, length):
+        smallestIdx = i
+        for j in range(i + 1, length):
+            _, (s_x,s_y) = entries[smallestIdx]
+            _, (r_x, r_y) = entries[j]
+            if r_y < s_y:
+                smallestIdx = j
+        tmp = entries[smallestIdx]
+        entries[smallestIdx] = entries[i]
+        entries[i] = tmp
+
+def sort_x(entries: [(UnoCard, float, float)]) -> None:
+    for i in range(0, 3):
+        smallestIdx = i
+        for j in range(i + 1, 3):
+            _, (s_x,s_y) = entries[smallestIdx]
+            _, (r_x, r_y) = entries[j]
+            if r_x < s_x:
+                smallestIdx = j     
+        tmp = entries[smallestIdx]
+        entries[smallestIdx] = entries[i]
+        entries[i] = tmp  
+
+    for i in range(3, 6):
+        smallestIdx = i
+        for j in range(i + 1, 6):
+            _, (s_x,s_y) = entries[smallestIdx]
+            _, (r_x, r_y) = entries[j]
+            if r_x < s_x:
+                smallestIdx = j     
+        tmp = entries[smallestIdx]
+        entries[smallestIdx] = entries[i]
+        entries[i] = tmp
 
 def remove_duplicates(entries: [(UnoCard, (float, float))], allowance = 5) -> [(UnoCard, (float, float))]:
     # 1. map all 
