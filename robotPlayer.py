@@ -89,6 +89,8 @@ class RobotPlayer(Player):
     def handle_turn(self, activeCard: UnoCard) -> bool:
         card_position = self.get_next_card(activeCard)
         card, position = card_position
+
+        print(f'Ich spiele die Karte {card}')
     
         canPlay = not card_position is None
         if canPlay:

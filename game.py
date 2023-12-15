@@ -49,6 +49,7 @@ class Game:
         self.update_game_stats()
         while not self.is_active_player_winning():
             player = self.get_next_player()
+            print(f'Nächster Spieler ist {player}')
             player.handle_turn(self.activeCard)
             self.update_game_stats()
         print(f"Congrats. {player} won the game.")
