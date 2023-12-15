@@ -85,8 +85,10 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
         predicted_uno_cards.append((uno_card, (bounding_box[0], bounding_box[1])))
 
     if camera_index == config.stack_camera:
-        # return predicted_uno_cards
-        return [(UnoCard(color=Color.BLUE, number=9), 2)]
+        return predicted_uno_cards
+
+        # for testing
+        # return [(UnoCard(color=Color.BLUE, number=9), 2)]
 
     return map_to_position(predicted_uno_cards)
 
