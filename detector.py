@@ -16,8 +16,15 @@ This methods predicts all uno cards from the given image
 4. Return an array of tuples (Uno Card, Position)
 """
 def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
-    # TODO: Kameraindex angeben
-    predicted_uno_cards = []
+    # Assert the right amount of cards
+    card_amount = 1
+    if camera_index == config.robot_camera:
+        card_amount = 6
+
+    # Preparation
+    predict_uno_cards = []
+    model = YOLO(config.model_path)
+    card_numbers = model.names
 
     # ignore this code (start)
     # but leave it here so the color detector works
@@ -27,35 +34,31 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     setattr(numpy, "asscalar", patch)
 
     # ignore this code (end)
+    while len(predict_uno_cards) != card_amount:
+        try:
+            # Capture the image
+            image = capture_picture(camera_index)
 
-    # capture the image
-    camera = cv2.VideoCapture(camera_index)
+            # Predict all uno cards from the image
+            result = predict(model, image)
 
-    ret, frame = camera.read()
+            # Build cards from boxes
+            predicted_uno_cards = build_cards(result, image, card_numbers)
+        except:
+            input("An error occured with the detection. Please check your setup")
 
-    if not ret:
-        print("Failed to capture the image!")
-        return []
+    # check if mapping is necessary
+    if camera_index == config.stack_camera:
+        # transform to correct form
+        card, _ = predict_uno_cards[0]
+        return [(card, 0)]
 
-    # Load a model and the card numbers (classes)
-    model = YOLO(config.model_path)
-    card_numbers = model.names
+    # return the mapped cards
+    return map_to_position(predicted_uno_cards)
 
-    # if it's the robot cam, we need to change the perspective so the uno card detection works better
-    if camera_index == config.robot_camera:
-        transformed_image = transform_image(frame)
-    else:
-        transformed_image = frame
-
-    # predict all uno cards from the image
-    results = model(transformed_image)
-
-    if len(results) == 0:
-        return []
-
-    first_result = results[0]
-
-    for box in first_result.boxes:
+def build_cards(result, image, card_numbers):
+    sol = []
+    for box in result.boxes:
         # get the predicted card number
         predicted_class = int(box.cls)
         card_number = card_numbers[predicted_class]
@@ -74,7 +77,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
             int((bounding_box[1] + bounding_box[3]) / 2)
         )
 
-        color_bgr = transformed_image[
+        color_bgr = image[
             center_right[1],
             center_right[0]
         ]
@@ -82,15 +85,31 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
         color = determine_color(color_bgr)
         uno_card = UnoCard(card_number, color)
 
-        predicted_uno_cards.append((uno_card, (bounding_box[0], bounding_box[1])))
+        sol.append((uno_card, (bounding_box[0], bounding_box[1])))
+    return sol
 
-    if camera_index == config.stack_camera:
-        return predicted_uno_cards
+def predict(model, image):
+    results = model(image)
 
-        # for testing
-        # return [(UnoCard(color=Color.BLUE, number=9), 2)]
+    if len(results) == 0:
+        raise "Cannot predict a card"
 
-    return map_to_position(predicted_uno_cards)
+    return results[0]
+
+def capture_picture(camera_index):
+    # capture the image
+    camera = cv2.VideoCapture(camera_index)
+
+    ret, frame = camera.read()
+
+    if not ret:
+        raise "Failed to capture the image"
+    
+    # if it's the robot cam, we need to change the perspective so the uno card detection works better
+    if camera_index == config.robot_camera:
+        frame = transform_image(frame)
+    
+    return frame
 
 
 def map_to_position(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:

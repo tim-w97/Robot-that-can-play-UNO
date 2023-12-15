@@ -20,12 +20,7 @@ init_card, position = predict_uno_cards(config.stack_camera)[0]
 # for testing
 # init_card = UnoCard(color=Color.BLUE, number=9)
 
-cards = []
-while len(cards) != 6:
-    try:
-        cards = predict_uno_cards(config.robot_camera)
-    except:
-        input("Cards were not detected. Please check the location of the camera.")
+cards = predict_uno_cards(config.robot_camera)
 
 for card, position in cards:
     print(f'Card<{card}>, position: {position}')
