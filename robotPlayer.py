@@ -115,6 +115,7 @@ class RobotPlayer(Player):
     Updates the stack by calculation which card has been played or drawn. 
     """
     def update_stack(self, playedCard: UnoCard, hasPlayed: bool):
+        print('Stack wird geupdated')
         if hasPlayed:
             self.stack.remove_card(playedCard)
 

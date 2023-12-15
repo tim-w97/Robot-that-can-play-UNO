@@ -41,10 +41,12 @@ class CardStack:
         return self.card_amount
 
     def remove_card(self, removed_card: UnoCard):
+        print(f'{removed_card} soll entfernt werden')
         for card in self.cards:
             unocard,_ = card
             if unocard.match(removed_card):
                 self.cards.remove(card)
+                print(f'Wird auch entfernt: {self}')
     
     # deprecated
     def pop_specific_card(self, card: UnoCard) -> (UnoCard, int):
