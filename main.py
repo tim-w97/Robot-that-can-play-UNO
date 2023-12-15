@@ -15,9 +15,10 @@ TODO:
 """
 
 # predict cards
-# init_card, position = predict_uno_cards(config.stack_camera)[0]
+init_card, position = predict_uno_cards(config.stack_camera)[0]
 
-init_card = UnoCard(color=Color.BLUE, number=9)
+# for testing
+# init_card = UnoCard(color=Color.BLUE, number=9)
 
 cards = []
 while len(cards) != 6:
@@ -34,7 +35,7 @@ robotPlayer = RobotPlayer("Rob", cards)
 player = HumanPlayer("Lukas")
 
 # run the game
-game = Game(robotPlayer, player, initialCard=init_card)
+game = Game(robotPlayer, player)
 game.run_game()
 
 # cleanup

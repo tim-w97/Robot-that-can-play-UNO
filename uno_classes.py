@@ -46,7 +46,7 @@ class CardStack:
             unocard,_ = card
             if unocard.match(removed_card):
                 self.cards.remove(card)
-                print(f'Wird auch entfernt: {self}')
+                break
     
     # deprecated
     def pop_specific_card(self, card: UnoCard) -> (UnoCard, int):
