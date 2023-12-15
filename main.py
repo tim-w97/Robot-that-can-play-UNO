@@ -8,30 +8,20 @@ from game import Game
 
 from detector import predict_uno_cards
 
-"""
-TODO:
-- Analyze the initial card
-- Analyze the robot's cardstack
-"""
-
-# predict cards
-init_card, position = predict_uno_cards(config.stack_camera)[0]
-
-# for testing
-# init_card = UnoCard(color=Color.BLUE, number=9)
-
+# Detect the CardStack
 cards = predict_uno_cards(config.robot_camera)
 
+# A quick print
 for card, position in cards:
     print(f'Card<{card}>, position: {position}')
 
-# init the players
+# Init of the players
 robotPlayer = RobotPlayer("Rob", cards)
 player = HumanPlayer("Lukas")
 
-# run the game
+# Run the game
 game = Game(robotPlayer, player)
 game.run_game()
 
-# cleanup
+# Cleanup
 cv2.destroyAllWindows()

@@ -140,6 +140,7 @@ def sort_y(entries: [(UnoCard, float, float)]) -> None:
         entries[smallestIdx] = entries[i]
         entries[i] = tmp
 
+# Note: That should not be part of the grade
 def sort_x(entries: [(UnoCard, float, float)]) -> None:
     for i in range(0, 3):
         smallestIdx = i
