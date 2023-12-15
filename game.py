@@ -38,9 +38,16 @@ class Game:
     Detect the active card.
     """
     def update_game_stats(self):
-        card, _ = predict_uno_cards(config.stack_camera)[0]
-        self.activeCard = card
-        print(f'Aktuelle Karte: {str(self.activeCard)}')
+        undetected = True
+        while undetected:
+            try:
+                card, _ = predict_uno_cards(config.stack_camera)[0]
+                self.activeCard = card
+                print(f'Aktuelle Karte: {str(self.activeCard)}')
+                undetected = False
+            except:
+                input("There is an error with the image detection. Please check the setup and try again")
+        
 
     """
     This is the main method to call.

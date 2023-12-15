@@ -19,7 +19,13 @@ TODO:
 
 init_card = UnoCard(color=Color.BLUE, number=9)
 
-cards = predict_uno_cards(config.robot_camera)
+cards = []
+while len(cards) != 6:
+    try:
+        cards = predict_uno_cards(config.robot_camera)
+    except:
+        input("Cards were not detected. Please check the location of the camera.")
+
 for card, position in cards:
     print(f'Card<{card}>, position: {position}')
 
