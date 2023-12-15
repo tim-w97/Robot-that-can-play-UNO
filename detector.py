@@ -22,7 +22,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
         card_amount = 6
 
     # Preparation
-    predict_uno_cards = []
+    predicted_uno_cards = []
     model = YOLO(config.model_path)
     card_numbers = model.names
 
@@ -34,7 +34,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     setattr(numpy, "asscalar", patch)
 
     # ignore this code (end)
-    while len(predict_uno_cards) != card_amount:
+    while len(predicted_uno_cards) != card_amount:
         try:
             # Capture the image
             image = capture_picture(camera_index)
@@ -50,11 +50,12 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     # check if mapping is necessary
     if camera_index == config.stack_camera:
         # transform to correct form
-        card, _ = predict_uno_cards[0]
+        card, _ = predicted_uno_cards[0]
         return [(card, 0)]
 
     # return the mapped cards
     return map_to_position(predicted_uno_cards)
+
 
 def build_cards(result, image, card_numbers):
     sol = []
