@@ -36,6 +36,15 @@ def calculate_poses(card_number: int) -> [PoseObject]:
         yaw=0
     )
 
+    go_up_pose = PoseObject(
+        x=x_pos,
+        y=0.29,
+        z=0.3,
+        roll=0,
+        pitch=1.57,
+        yaw=0
+    )
+
     # move the card to the stack
     stack_pose = PoseObject(
         x=0.2,
@@ -56,7 +65,7 @@ def calculate_poses(card_number: int) -> [PoseObject]:
         yaw=-1.57
     )
 
-    return [prepare_pose, card_pose, stack_pose, release_pose]
+    return [prepare_pose, card_pose, go_up_pose, stack_pose, release_pose]
 
 
 """
@@ -131,17 +140,20 @@ class RobotPlayer(Player):
     The robot picks up a card.
     """
     def pick_up_card(self, poses: [PoseObject]):
-        prepare, pick, stack, release = poses
+        prepare, pick, go_up, stack, release = poses
 
         # open the grabber in case it's closed
         self.robot.release()
 
-        # pick up card with given card_number
+        # move above the desired card
         self.robot.move_pose(prepare)
 
-        # move card up
+        # pick down and pick the card
         self.robot.move_pose(pick)
         self.robot.grab()
+
+        # move up again so the robot doesn't collide with the other cards
+        self.robot.move_pose(go_up)
 
         # move to card stack
         self.robot.move_pose(stack)
