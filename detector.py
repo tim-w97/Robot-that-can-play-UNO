@@ -1,5 +1,4 @@
 from ultralytics import YOLO
-from image_transformer import transform_image
 from color_detector import determine_color
 from uno_classes import UnoCard, Color
 
@@ -41,14 +40,8 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     model = YOLO(config.model_path)
     card_numbers = model.names
 
-    # if it's the robot cam, we need to change the perspective so the uno card detection works better
-    if camera_index == config.robot_camera:
-        transformed_image = transform_image(frame)
-    else:
-        transformed_image = frame
-
     # predict all uno cards from the image
-    results = model(transformed_image)
+    results = model(frame)
 
     if len(results) == 0:
         return []
@@ -74,7 +67,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
             int((bounding_box[1] + bounding_box[3]) / 2)
         )
 
-        color_bgr = transformed_image[
+        color_bgr = frame[
             center_right[1],
             center_right[0]
         ]
