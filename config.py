@@ -12,7 +12,7 @@ contour_filter_size = 50_000
 use_fake_image = True
 
 # paths
-model_path = './trained uno model.pt'
+model_path = './improved uno model.pt'
 fake_image_path = './uno cards test image.jpeg'
 
 # config for the image transformer
