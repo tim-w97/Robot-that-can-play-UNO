@@ -6,6 +6,8 @@ import cv2
 import config
 import numpy
 
+import time
+
 """
 This methods predicts all uno cards from the given image
 
@@ -30,25 +32,30 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     # capture the image
     camera = cv2.VideoCapture(camera_index)
 
-    ret, frame = camera.read()
+    boxes = []
 
-    if not ret:
-        print("Failed to capture the image!")
-        return []
+    while len(boxes) == 0:
+        ret, frame = camera.read()
 
-    # Load a model and the card numbers (classes)
-    model = YOLO(config.model_path)
-    card_numbers = model.names
+        if not ret:
+            print("Failed to capture the image!")
+            boxes = []
 
-    # predict all uno cards from the image
-    results = model(frame)
+        # Load a model and the card numbers (classes)
+        model = YOLO(config.model_path)
+        card_numbers = model.names
 
-    if len(results) == 0:
-        return []
+        # predict all uno cards from the image
+        yolo_result = model(frame)
 
-    first_result = results[0]
+        first_result = yolo_result[0]
+        boxes = first_result.boxes
 
-    for box in first_result.boxes:
+        if len(boxes) == 0:
+            print("No uno cards detected, trying again in 1 second.")
+            time.sleep(1)
+
+    for box in boxes:
         # get the predicted card number
         predicted_class = int(box.cls)
         card_number = card_numbers[predicted_class]
