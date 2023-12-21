@@ -96,8 +96,8 @@ def map_to_position(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
     # remove duplicates
     results = remove_duplicates(results)
 
-    # transform cards
-    sol = calculate_positions(results)
+    # sort cards by its x position
+    sol = sort_cards(results)
 
     return sol
 
@@ -117,16 +117,21 @@ def remove_duplicates(entries: [(UnoCard, (float, float))], allowance = 5) -> [(
             sol.append(entry)
     return sol
 
-def calculate_positions(entries: [(UnoCard, (float, float))]) -> [(UnoCard, int)]:
-    idx = 3
-    sol = []
-    for r in entries:
-        card, boundings = r
-        sol.append((card, idx))
-        idx -= 1
-        if idx == 0:
-            idx = 6
-    return sol
+def sort_cards(entries: [(UnoCard, (float, float))]) -> [(UnoCard, int)]:
+    sorted_entries = sorted(entries, key=lambda e: e[1][0])
+
+    cards_with_index = []
+    index = 0
+
+    for entry in sorted_entries:
+        cards_with_index.append(
+            (entry[0], index)
+        )
+
+        index += 1
+
+    return cards_with_index
+
 
 # test the method
 # cards = predict_uno_cards(
