@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 from color_detector import determine_color
-from uno_classes import UnoCard, Color
+from uno_classes import UnoCard
 
 import cv2
 import config
@@ -17,7 +17,6 @@ This methods predicts all uno cards from the given image
 4. Return an array of tuples (Uno Card, Position)
 """
 def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
-    # TODO: Kameraindex angeben
     predicted_uno_cards = []
 
     # ignore this code (start)
