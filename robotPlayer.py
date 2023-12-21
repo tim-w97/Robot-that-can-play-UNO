@@ -131,7 +131,8 @@ class RobotPlayer(Player):
     The robot picks up a card.
     """
     def pick_up_card(self, poses: [PoseObject]):
-        prepare, pick, stack = poses
+        prepare, pick, stack, release = poses
+
         # open the grabber in case it's closed
         self.robot.release()
 
@@ -142,11 +143,10 @@ class RobotPlayer(Player):
         self.robot.move_pose(pick)
         self.robot.grab()
 
-        # move to home pose, but little bit higher
-        self.robot.moveJoints(0, 0.5, -0.7, 0, 0, 0)
-
         # move to card stack
         self.robot.move_pose(stack)
+        self.robot.move_pose(release)
+
         self.robot.release()
 
     """
