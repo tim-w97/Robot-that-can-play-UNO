@@ -21,7 +21,7 @@ init_card, position = predict_uno_cards(config.stack_camera)[0]
 # init_card = UnoCard(color=Color.BLUE, number=9)
 
 cards = []
-while len(cards) != 6:
+while len(cards) != 7:
     try:
         cards = predict_uno_cards(config.robot_camera)
     except:
