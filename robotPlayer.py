@@ -4,67 +4,59 @@ from pyniryo import PoseObject
 from player import Player
 import math
 
-pickup_pitch = math.radians(25)
-rotation_90 = math.radians(90)
-
-x_pos_prepare = 0.12
-
-x_pos_min = 0.2
-x_pos_max = 0.35
-x_pos_middle = (x_pos_min + x_pos_max) / 2
-
-y_pos_min = -0.17
-y_pos_max = 0.17
-
-z_pos = 0.075
-z_pos_up = 0.2
-
 """
 Calculates the poses for a specific slot.
 """
 def calculate_poses(card_number: int) -> [PoseObject]:
-    if card_number not in range(1, 7):
-        raise ValueError(f"card number {card_number} doesn't exist.")
+    card_offset = 0.063
+    x_start = 0.31
 
-    x_pos = x_pos_min
-    y_pos = y_pos_min
-    yaw = rotation_90
+    if card_number < 0 or card_number > 6:
+        raise "Can't pick card with index " + str(card_number)
 
-    if card_number > 3:
-        y_pos = y_pos_max
-        yaw = -rotation_90
+    x_pos = x_start - card_number * card_offset
 
-    if card_number % 3 == 2:
-        x_pos = x_pos_middle
-
-    if card_number % 3 == 0:
-        x_pos = x_pos_max
-    
+    # move above the desired card
     prepare_pose = PoseObject(
-        x=x_pos_prepare,
-        y=y_pos,
-        z=z_pos,
-        roll=rotation_90,
-        pitch=pickup_pitch,
-        yaw=yaw
+        x=x_pos,
+        y=0.29,
+        z=0.2,
+        roll=0,
+        pitch=1.57,
+        yaw=0
     )
+
+    # move a bit more down to prepare pickup
     card_pose = PoseObject(
         x=x_pos,
-        y=y_pos,
-        z=z_pos,
-        roll=rotation_90,
-        pitch=pickup_pitch,
-        yaw=yaw
+        y=0.29,
+        z=0.15,
+        roll=0,
+        pitch=1.57,
+        yaw=0
     )
+
+    # move the card to the stack
     stack_pose = PoseObject(
-        x=-0.01,
-        y=-0.2,
-        z=0.14,
-        roll=rotation_90,
-        pitch=0.6,
-        yaw=-rotation_90
+        x=0.2,
+        y=-0.01,
+        z=0.3,
+        roll=0,
+        pitch=1.57,
+        yaw=0
     )
-    return [prepare_pose, card_pose, stack_pose]
+
+    # rotate the arm a little bit so the card falls nicely into the holder
+    release_pose = PoseObject(
+        x=0.2,
+        y=-0.2,
+        z=0.15,
+        roll=1.57,
+        pitch=0.9,
+        yaw=-1.57
+    )
+
+    return [prepare_pose, card_pose, stack_pose, release_pose]
 
 
 """
