@@ -46,6 +46,7 @@ class CardStack:
             unocard,_ = card
             if unocard.match(removed_card):
                 self.cards.remove(card)
+                self.card_amount -= 1
                 break
     
     # deprecated
