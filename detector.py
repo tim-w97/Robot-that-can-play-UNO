@@ -1,12 +1,12 @@
 from ultralytics import YOLO
+
+import speaker
 from color_detector import determine_color
 from uno_classes import UnoCard
 
 import cv2
 import config
 import numpy
-
-import time
 
 """
 This methods predicts all uno cards from the given image
@@ -51,8 +51,8 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
         boxes = first_result.boxes
 
         if len(boxes) == 0:
-            print("No uno cards detected, trying again in 1 second.")
-            time.sleep(1)
+            speaker.speak("speech/can not see the cards.mp3")
+            input("Press any key to continue")
 
     for box in boxes:
         # get the predicted card number

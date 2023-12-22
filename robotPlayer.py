@@ -1,3 +1,4 @@
+import speaker
 from control import RobotProxy
 from uno_classes import UnoCard, CardStack, Color
 from pyniryo import PoseObject
@@ -79,7 +80,8 @@ class RobotPlayer(Player):
         self.robot = RobotProxy()
         self.stack = CardStack(cards)
         self.robot.connect()
-        self.robot.say(f"Hi my name {name}. I am glad to play with you.")
+
+        speaker.speak("speech/my name is rob lets play uno together.mp3")
 
     """
     This method has to be overwritten. Steps could be:
@@ -98,9 +100,9 @@ class RobotPlayer(Player):
             self.update_stack(card, canPlay)
 
         if self.card_amount == 1:
-            self.robot.say("Uno")
+            speaker.speak("speech/uno.mp3")
         elif self.card_amount == 0:
-            self.robot.say("Uno Uno")
+            speaker.speak("speech/uno uno.mp3")
 
         return True
 

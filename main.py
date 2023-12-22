@@ -1,6 +1,7 @@
 import config
 import cv2
 
+import speaker
 from uno_classes import *
 from robotPlayer import RobotPlayer
 from player import HumanPlayer
@@ -38,13 +39,10 @@ while True:
     cards = predict_uno_cards(config.robot_camera)
 
     if len(cards) != config.card_amount:
-        input(f"Please ensure that the robot has ${config.card_amount} cards. Press any key to try again")
+        speaker.speak('speech/ensure seven cards.mp3')
+        input("Press any key to try again")
     else:
         break
-
-
-for card, position in cards:
-    print(f'Card<{card}>, position: {position}')
 
 # init the players
 robotPlayer = RobotPlayer("Rob", cards)

@@ -58,7 +58,12 @@ class Game:
             player = self.get_next_player()
             player.handle_turn(self.activeCard)
             self.update_game_stats()
-        print(f"Congrats. {player} won the game.")
+
+        # sorry, this is very bad coding
+        if player.name == "Lukas":
+            print("speech/you won the game.mp3")
+        else:
+            print("speech/i won the game.mp3")
 
         # Cleanup
         for player in self.players:

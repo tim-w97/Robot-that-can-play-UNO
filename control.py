@@ -94,7 +94,6 @@ class RobotProxy:
     # Speech
     def say(self, text: str):
         # self.checkConnection()
-        # self.robot.say(text, 0)
         print(text)
 
     # functions for fun
