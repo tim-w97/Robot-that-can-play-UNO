@@ -45,7 +45,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
         card_numbers = model.names
 
         # predict all uno cards from the image
-        yolo_result = model(frame)
+        yolo_result = model(frame, verbose=False)
 
         first_result = yolo_result[0]
         boxes = first_result.boxes
