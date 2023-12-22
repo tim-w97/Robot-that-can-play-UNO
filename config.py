@@ -1,6 +1,6 @@
 # general
-stack_camera = 1
-robot_camera = 0
+stack_camera = 0
+robot_camera = 1
 gray_image_thresh = 130
 
 # contours
@@ -12,7 +12,7 @@ contour_filter_size = 50_000
 use_fake_image = True
 
 # paths
-model_path = './improved uno model.pt'
+model_path = './uno model 205 epochs.pt'
 fake_image_path = './uno cards test image.jpeg'
 
 # config for the image transformer
