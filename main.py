@@ -34,11 +34,14 @@ while len(stack_cards) != 1:
 
 cards = []
 
-while len(cards) != 7:
-    try:
-        cards = predict_uno_cards(config.robot_camera)
-    except:
-        input("Cards were not detected. Please check the location of the camera.")
+while True:
+    cards = predict_uno_cards(config.robot_camera)
+
+    if len(cards) != 7:
+        input("Please ensure that the robot has 7 cards. Press any key to try again")
+    else:
+        break
+
 
 for card, position in cards:
     print(f'Card<{card}>, position: {position}')
