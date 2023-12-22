@@ -13,7 +13,7 @@ class Player:
 
     def __init__(self, name: str):
         self.name = name
-        self.card_amount = 6
+        self.card_amount = config.card_amount
 
     """
     This method returns the current amount of cards

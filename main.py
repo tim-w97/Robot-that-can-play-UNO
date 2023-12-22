@@ -37,8 +37,8 @@ cards = []
 while True:
     cards = predict_uno_cards(config.robot_camera)
 
-    if len(cards) != 7:
-        input("Please ensure that the robot has 7 cards. Press any key to try again")
+    if len(cards) != config.card_amount:
+        input(f"Please ensure that the robot has ${config.card_amount} cards. Press any key to try again")
     else:
         break
 

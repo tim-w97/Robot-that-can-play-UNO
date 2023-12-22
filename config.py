@@ -10,6 +10,7 @@ contour_filter_size = 50_000
 
 # game
 play_time = 5
+card_amount = 7
 
 # 
 use_fake_image = True
