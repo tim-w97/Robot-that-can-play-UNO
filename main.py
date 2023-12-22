@@ -14,14 +14,27 @@ TODO:
 - Analyze the robot's cardstack
 """
 
-# predict cards
-init_card, position = predict_uno_cards(config.stack_camera)[0]
+"""
+# predict initial stack card
+stack_cards = []
+
+while len(stack_cards) != 1:
+    stack_cards = predict_uno_cards(config.stack_camera)
+
+    if len(stack_cards) == 0:
+        input("Detected no card on the stack. Press any key to try again.")
+
+    if len(stack_cards) > 1:
+        input("Detected more than one card on the stack. Press any key to try again.")
+"""
+
 
 # for testing
 # init_card = UnoCard(color=Color.BLUE, number=9)
 
 cards = []
-while len(cards) != 6:
+
+while len(cards) != 7:
     try:
         cards = predict_uno_cards(config.robot_camera)
     except:

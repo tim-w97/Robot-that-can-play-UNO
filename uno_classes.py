@@ -25,6 +25,9 @@ class UnoCard:
 
     def match(self, other):
         return self.color == other.color or int(self.number) == int(other.number)
+
+    def match_exactly(self, other):
+        return self.color == other.color and int(self.number) == int(other.number)
     
 class CardStack:
 
@@ -41,10 +44,9 @@ class CardStack:
         return self.card_amount
 
     def remove_card(self, removed_card: UnoCard):
-        print(f'{removed_card} soll entfernt werden')
         for card in self.cards:
             unocard,_ = card
-            if unocard.match(removed_card):
+            if unocard.match_exactly(removed_card):
                 self.cards.remove(card)
                 self.card_amount -= 1
                 break

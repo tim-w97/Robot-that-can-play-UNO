@@ -1,11 +1,12 @@
 from ultralytics import YOLO
-from image_transformer import transform_image
 from color_detector import determine_color
-from uno_classes import UnoCard, Color
+from uno_classes import UnoCard
 
 import cv2
 import config
 import numpy
+
+import time
 
 """
 This methods predicts all uno cards from the given image
@@ -16,7 +17,6 @@ This methods predicts all uno cards from the given image
 4. Return an array of tuples (Uno Card, Position)
 """
 def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
-    # TODO: Kameraindex angeben
     predicted_uno_cards = []
 
     # ignore this code (start)
@@ -31,31 +31,30 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
     # capture the image
     camera = cv2.VideoCapture(camera_index)
 
-    ret, frame = camera.read()
+    boxes = []
 
-    if not ret:
-        print("Failed to capture the image!")
-        return []
+    while len(boxes) == 0:
+        ret, frame = camera.read()
 
-    # Load a model and the card numbers (classes)
-    model = YOLO(config.model_path)
-    card_numbers = model.names
+        if not ret:
+            print("Failed to capture the image!")
+            boxes = []
 
-    # if it's the robot cam, we need to change the perspective so the uno card detection works better
-    if camera_index == config.robot_camera:
-        transformed_image = transform_image(frame)
-    else:
-        transformed_image = frame
+        # Load a model and the card numbers (classes)
+        model = YOLO(config.model_path)
+        card_numbers = model.names
 
-    # predict all uno cards from the image
-    results = model(transformed_image)
+        # predict all uno cards from the image
+        yolo_result = model(frame)
 
-    if len(results) == 0:
-        return []
+        first_result = yolo_result[0]
+        boxes = first_result.boxes
 
-    first_result = results[0]
+        if len(boxes) == 0:
+            print("No uno cards detected, trying again in 1 second.")
+            time.sleep(1)
 
-    for box in first_result.boxes:
+    for box in boxes:
         # get the predicted card number
         predicted_class = int(box.cls)
         card_number = card_numbers[predicted_class]
@@ -74,7 +73,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
             int((bounding_box[1] + bounding_box[3]) / 2)
         )
 
-        color_bgr = transformed_image[
+        color_bgr = frame[
             center_right[1],
             center_right[0]
         ]
@@ -94,55 +93,13 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
 
 
 def map_to_position(results: [(UnoCard, (float,float))]) -> [(UnoCard, int)]:
-    # 1. remove duplicates
+    # remove duplicates
     results = remove_duplicates(results)
 
-    # 2. sort by y
-    sort_y(results)
-
-    # 3. sort by x
-    sort_x(results)
-
-    # 3. transform cards
-    sol = calculate_positions(results)
+    # sort cards by its x position
+    sol = sort_cards(results)
 
     return sol
-
-def sort_y(entries: [(UnoCard, float, float)]) -> None:
-    length = len(entries)
-    for i in range(0, length):
-        smallestIdx = i
-        for j in range(i + 1, length):
-            _, (s_x,s_y) = entries[smallestIdx]
-            _, (r_x, r_y) = entries[j]
-            if r_y < s_y:
-                smallestIdx = j
-        tmp = entries[smallestIdx]
-        entries[smallestIdx] = entries[i]
-        entries[i] = tmp
-
-def sort_x(entries: [(UnoCard, float, float)]) -> None:
-    for i in range(0, 3):
-        smallestIdx = i
-        for j in range(i + 1, 3):
-            _, (s_x,s_y) = entries[smallestIdx]
-            _, (r_x, r_y) = entries[j]
-            if r_x < s_x:
-                smallestIdx = j     
-        tmp = entries[smallestIdx]
-        entries[smallestIdx] = entries[i]
-        entries[i] = tmp  
-
-    for i in range(3, 6):
-        smallestIdx = i
-        for j in range(i + 1, 6):
-            _, (s_x,s_y) = entries[smallestIdx]
-            _, (r_x, r_y) = entries[j]
-            if r_x < s_x:
-                smallestIdx = j     
-        tmp = entries[smallestIdx]
-        entries[smallestIdx] = entries[i]
-        entries[i] = tmp
 
 def remove_duplicates(entries: [(UnoCard, (float, float))], allowance = 5) -> [(UnoCard, (float, float))]:
     # 1. map all 
@@ -160,16 +117,21 @@ def remove_duplicates(entries: [(UnoCard, (float, float))], allowance = 5) -> [(
             sol.append(entry)
     return sol
 
-def calculate_positions(entries: [(UnoCard, (float, float))]) -> [(UnoCard, int)]:
-    idx = 3
-    sol = []
-    for r in entries:
-        card, boundings = r
-        sol.append((card, idx))
-        idx -= 1
-        if idx == 0:
-            idx = 6
-    return sol
+def sort_cards(entries: [(UnoCard, (float, float))]) -> [(UnoCard, int)]:
+    sorted_entries = sorted(entries, key=lambda e: e[1][0])
+
+    cards_with_index = []
+    index = 0
+
+    for entry in sorted_entries:
+        cards_with_index.append(
+            (entry[0], index)
+        )
+
+        index += 1
+
+    return cards_with_index
+
 
 # test the method
 # cards = predict_uno_cards(
