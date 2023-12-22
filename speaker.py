@@ -1,9 +1,11 @@
 import pygame
 
-pygame.init()
-pygame.mixer.init()
+mixer = pygame.mixer
 
 def speak(path_to_mp3):
-    pygame.mixer.music.load(path_to_mp3)
-    pygame.mixer.music.play()
-    pygame.event.wait()
+    mixer.init()
+    speech = mixer.Sound(path_to_mp3)
+    channel = speech.play()
+
+    while channel.get_busy():
+        pygame.time.wait(100)

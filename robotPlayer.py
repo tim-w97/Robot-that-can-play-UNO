@@ -81,8 +81,6 @@ class RobotPlayer(Player):
         self.stack = CardStack(cards)
         self.robot.connect()
 
-        speaker.speak("speech/my name is rob lets play uno together.mp3")
-
     """
     This method has to be overwritten. Steps could be:
     1. Calculate a playable card
@@ -90,6 +88,8 @@ class RobotPlayer(Player):
     3. updateStack
     """
     def handle_turn(self, activeCard: UnoCard) -> bool:
+        speaker.speak('speech/my turn.mp3')
+
         card_position = self.get_next_card(activeCard)
 
         canPlay = not card_position is None
@@ -98,6 +98,8 @@ class RobotPlayer(Player):
             card, position = card_position
             self.play_card(position)
             self.update_stack(card, canPlay)
+        else:
+            speaker.speak('speech/fuck i cannot play.mp3')
 
         if self.card_amount == 1:
             speaker.speak("speech/uno.mp3")

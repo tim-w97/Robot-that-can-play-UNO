@@ -52,7 +52,7 @@ def predict_uno_cards(camera_index = config.robot_camera) -> [(UnoCard, int)]:
 
         if len(boxes) == 0:
             speaker.speak("speech/can not see the cards.mp3")
-            input("Press any key to continue")
+            input("Press return to continue")
 
     for box in boxes:
         # get the predicted card number

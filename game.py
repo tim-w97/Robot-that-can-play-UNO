@@ -1,4 +1,5 @@
 import config
+import speaker
 
 from detector import predict_uno_cards
 from player import Player
@@ -61,9 +62,9 @@ class Game:
 
         # sorry, this is very bad coding
         if player.name == "Lukas":
-            print("speech/you won the game.mp3")
+            speaker.speak("speech/you won the game.mp3")
         else:
-            print("speech/i won the game.mp3")
+            speaker.speak("speech/i won the game.mp3")
 
         # Cleanup
         for player in self.players:

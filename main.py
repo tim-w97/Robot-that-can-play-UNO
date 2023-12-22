@@ -23,10 +23,10 @@ while len(stack_cards) != 1:
     stack_cards = predict_uno_cards(config.stack_camera)
 
     if len(stack_cards) == 0:
-        input("Detected no card on the stack. Press any key to try again.")
+        input("Detected no card on the stack. Press return to try again.")
 
     if len(stack_cards) > 1:
-        input("Detected more than one card on the stack. Press any key to try again.")
+        input("Detected more than one card on the stack. Press return to try again.")
 """
 
 
@@ -40,9 +40,11 @@ while True:
 
     if len(cards) != config.card_amount:
         speaker.speak('speech/ensure seven cards.mp3')
-        input("Press any key to try again")
+        input("Press return to try again")
     else:
         break
+
+speaker.speak("speech/my name is rob lets play uno together.mp3")
 
 # init the players
 robotPlayer = RobotPlayer("Rob", cards)
