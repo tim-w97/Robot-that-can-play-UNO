@@ -46,7 +46,7 @@ class HumanPlayer(Player):
         # self.card_amount = int(input(f"It's your turn {self.name}. How many cards do you have?"))
         card, position = predict_uno_cards(config.stack_camera)[0]
         delay = config.play_time
-        while delay > 0 and card == activeCard:
+        while delay > 0 and card.match_exactly(activeCard):
             sleep(1)
             delay -= 1
             card, position = predict_uno_cards(config.stack_camera)[0]
